@@ -1,0 +1,9 @@
+.pages/
+node_modules/
+*.zip
+*.tar.gz
+.env
+.env.*
+/data/backups/*
+!/data/backups/README.md
+/docs/*.png

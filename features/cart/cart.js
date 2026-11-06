@@ -1,0 +1,13 @@
+// features/cart/cart.js
+
+function qtyHTML(id,q){const p=db.products.find(p=>p.id===id);return `<div class="qty"><button data-minus="${id}" aria-label="減少數量">−</button><span>${q}</span><button data-add="${id}" aria-label="增加數量" ${q>=stock(db,p)+1?'disabled':''}>＋</button></div>`}
+
+function cartHTML(t,count){return `<aside class="checkout"><div class="row"><h2>購物袋 <span class="sub">／ ${count} 件</span></h2><button class="icon" data-action="toggle" aria-label="收合結帳區">⇥</button></div><div class="cartitems">${t.items.length?t.items.map(i=>`<div class="cartitem"><div class="row"><h4>${esc(i.name)}</h4><button class="remove" data-remove="${i.id}" aria-label="移除 ${esc(i.name)}">×</button></div><span class="sub">${itemPriceText(i)}</span>${autoGiftQty[i.id]?`<div class="promo">滿額贈自動加入 ${autoGiftQty[i.id]} 件</div>`:''}<div class="row">${qtyHTML(i.id,i.qty)}<strong>${money(i.total)}</strong></div></div>`).join(''):'<div class="empty"><div class="empty-icon">♧</div>購物袋還空著<br><span class="sub">點選左側商品，開始這筆交易。</span></div>'}</div><div>${giftMessages.map(m=>`<div class="notice" role="status">${esc(m)}</div>`).join('')}${promotionHints(t)}${t.coupon?`<div class="offerline row"><span>✦ 優惠碼 ${esc(t.coupon.code)}</span><span>−${money(t.discount)}</span></div>`:''}<div class="coupon"><input id="couponInput" placeholder="輸入優惠碼" aria-label="優惠碼" value="${esc(code)}"><button data-action="apply">套用</button></div><div class="couponnote">${code?(t.coupon?'✓ 已套用優惠碼':'找不到此優惠碼，請重新輸入'):'優惠碼可與商品優惠一起使用'}</div><div class="summary"><div class="row sub"><span>商品小計</span><span>${money(t.original)}</span></div><div class="row sub"><span>優惠折抵</span><span>− ${money(t.original-t.total)}</span></div><div class="row total"><span>應收金額</span><strong>${money(t.total)}</strong></div></div><div class="checkoutbtn"><button data-action="cancel" ${!count?'disabled':''}>取消</button><button class="primary" data-action="checkout" ${!count?'disabled':''}>結帳　${money(t.total)} →</button></div></div></aside>`}
+
+function change(id,d){const p=db.products.find(p=>p.id===id);const q=(cart[id]||0)+d;if(q>stock(db,p)+1)return toast('數量已達可售上限（含 1 件展示品）');if(q<=0){delete manualCart[id];declinedGifts.add(id)}else{manualCart[id]=q;if(d<0&&autoGiftQty[id])declinedGifts.add(id);else declinedGifts.delete(id)}render()}
+
+function applyCoupon(){code=$('#couponInput').value.trim();render()}
+
+function resetCart(){manualCart={};cart={};autoGiftQty={};giftMessages=[];declinedGifts=new Set()}
+
+function refreshGiftCart(){const g=resolveGiftCart(db,manualCart,declinedGifts);cart=g.cart;autoGiftQty=g.auto;giftMessages=g.messages;declinedGifts=g.declined}

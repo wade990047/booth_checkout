@@ -1,0 +1,8 @@
+/* Promotion management and accessible condition disclosure */
+[hidden]{display:none!important}
+#promotionForm .requirement input[type=checkbox]{width:16px;min-width:16px;margin:0}
+#promotionForm .requirement input[type=number]{width:70px;min-width:0}
+.category-prefix{margin-top:12px}.category-prefix .row input{min-width:0;flex:1}.category-prefix button{white-space:nowrap}
+.offer-detail{margin:8px 0;background:#f6f2e9;border-radius:8px;padding:10px;font-size:12px}.offer-detail.applied{background:#eff4e9}.offer-detail summary{cursor:pointer;display:flex;justify-content:space-between;gap:12px;align-items:baseline;list-style:none}.offer-detail summary span{font-weight:600}.offer-detail summary small{flex-shrink:0}.offer-description{display:none;line-height:1.8;padding-top:10px;border-top:1px solid #ddd;margin-top:8px}.offer-detail[open] .offer-description,.offer-detail:hover .offer-description,.offer-detail:focus-within .offer-description{display:block}.transaction .details{line-height:1.8}
+.requirement.pool-row{grid-template-columns:20px minmax(0,1fr)}
+@media(max-width:800px){.nav{flex-wrap:wrap}.nav button{white-space:nowrap;flex:1 0 auto}.offer-detail summary{flex-wrap:wrap}.transaction>.row{flex-wrap:wrap}.transaction>.row>.actions{margin-left:auto}}

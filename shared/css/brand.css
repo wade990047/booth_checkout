@@ -1,0 +1,5 @@
+/* Keep the brand name and subtitle on their own single lines. */
+.brand{min-width:0}
+.brandmark{flex:0 0 42px}
+.brand>div:last-child{flex:1;min-width:0}
+.brand strong,.brand .eyebrow{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;max-width:100%}
