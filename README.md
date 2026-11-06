@@ -434,24 +434,3 @@
 | `docs/` | 補充說明。 |
 | `tools/` | 本機伺服器、驗證工具、部署檔案準備程式。 |
 | `.github/workflows/pages.yml` | GitHub Actions 自動檢查與部署。 |
-
-各功能有 `pages/<功能>/index.html` 獨立入口；所有入口載入共用功能，以維持側欄切換。調整 HTML 載入清單時，須同步檢查所有入口。
-
-### 驗證與自動部署
-
-在專案資料夾執行：
-
-```sh
-node tools/check.cjs
-node tools/build-pages.cjs
-```
-
-前者檢查 JS 語法、入口連結與計價案例；後者將可公開前端檔案整理至 `.pages/`。
-
-後續更新流程：修改檔案 → 檢查 → 提交並推送至 `master` → GitHub Actions 自動檢查及部署 → 確認正式網站。
-
-- 工作流程名稱為 **Validate and deploy website**；Pull Request 只檢查，不部署。
-- 只保存電腦檔案不會自動上傳。原 ChatGPT Sites 網站的修改也不會自行同步至這個儲存庫。
-- 部署內容採前端檔案白名單，不包含備份、文件、測試或本機啟動工具。
-- 更新網站程式與搬移瀏覽器資料是兩件事；資料搬移仍使用備份功能。
-- 詳見 [GitHub 部署說明](docs/GitHub部署說明.md)。
