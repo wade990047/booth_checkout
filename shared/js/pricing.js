@@ -1,6 +1,20 @@
 /* Pure checkout rules. Legacy offers are adapted without changing saved data. */
 function sold(db,id){return db.transactions.reduce((s,t)=>s+t.items.filter(i=>i.id===id).reduce((a,i)=>a+i.qty,0),0)}
 function stock(db,p){return p.initial-sold(db,p.id)}
+// Older products retain the original display-item policy; new products store false explicitly.
+function sellsDisplay(p){return p.sellDisplay!==false}
+function availableStock(db,p){return Math.max(0,stock(db,p)+(sellsDisplay(p)?1:0))}
+function categoryRemovalReason(db,name){
+ if(!db.categories.includes(name))return '找不到此分類';
+ if(db.products.some(p=>p.category===name))return '此分類仍有商品，請先編輯商品並移至其他分類';
+ if(allPromotions(db).some(r=>(r.type==='category'||r.type==='order_category'||isNthRule(r)&&r.scope==='category')&&r.category===name))return '此分類仍有優惠活動，請先修改或移除相關活動';
+ return '';
+}
+function removeEmptyCategory(db,name){
+ const reason=categoryRemovalReason(db,name);if(reason)throw Error(reason);
+ const next=structuredClone(db);next.categories=next.categories.filter(c=>c!==name);
+ if(next.categoryIds)delete next.categoryIds[name];return next;
+}
 function allPromotions(db){return [...db.products.filter(p=>p.offer!=null).map(p=>({id:'legacy:'+p.id,productId:p.id,name:p.offerName||p.name+'優惠',type:'bundle',offer:p.offer,minQty:p.minQty||1,discountLimit:p.discountLimit??null,requires:p.requires||[]})),...(db.promotions||[])]}
 function isOrderRule(r){return r.type==='order_all'||r.type==='order_category'}
 function isNthRule(r){return r.type==='nth_price'||r.type==='nth_percent'}
@@ -57,7 +71,7 @@ function validPromotions(d){
   return positive(r.minQty)&&(r.discountLimit==null||positive(r.discountLimit))&&Array.isArray(r.requires)&&r.requires.every(x=>x.id!==p.id&&d.products.some(p=>p.id===x.id)&&positive(x.qty))&&(r.type==='bundle'?nonnegative(r.offer)&&r.offer<=p.price:d.categories.includes(r.category)&&positive(r.threshold)&&positive(r.amount));
  });
 }
-if(typeof module!=='undefined')module.exports={sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
+if(typeof module!=='undefined')module.exports={sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
 
 // Auto-added quantities never contribute to gift thresholds or required-item conditions.
 function resolveGiftCart(db,manual,declined=new Set()){
@@ -68,7 +82,7 @@ function resolveGiftCart(db,manual,declined=new Set()){
   if(sum<r.threshold||!(r.requires||[]).every(x=>(manual[x.id]||0)>=x.qty))continue;
   eligibleIds.add(p.id);if(declined.has(p.id))continue;
   if((manual[p.id]||0)>=(r.minQty||1))continue;
-  if(stock(db,p)+1<(r.minQty||1)){messages.push(p.name+'：滿額贈已達標，但庫存不足，未自動加入');continue}
+  if(availableStock(db,p)<(r.minQty||1)){messages.push(p.name+'：滿額贈已達標，但庫存不足，未自動加入');continue}
   needed[p.id]=Math.max(needed[p.id]||0,(r.minQty||1)-(manual[p.id]||0));
  }
  for(const [id,qty] of Object.entries(needed)){auto[id]=qty;cart[id]=(manual[id]||0)+qty}
