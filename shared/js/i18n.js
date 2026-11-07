@@ -1651,6 +1651,108 @@ Object.assign(uiDictionary,{
     " 点とその在庫を削除し、関連するキャンペーンを整理します。先にバックアップを出力してください。"
   ]
 });
+Object.assign(uiDictionary,{
+  "分類滿額贈（免費贈品）": [
+    "Category spend gift (free)",
+    "カテゴリ購入額特典（無料）"
+  ],
+  "每滿 ": [
+    "For every ",
+    "対象数量／金額："
+  ],
+  " 件，較低價商品優惠 1 件，可重複累計。": [
+    " items, discount one lower-priced item. Repeats for each group.",
+    " 点ごとに低価格の商品1点を割引。繰り返し適用されます。"
+  ],
+  " 件，可折扣 ": [
+    " items; discounted quantity: ",
+    " 点、割引対象："
+  ],
+  " 件，優惠價 ": [
+    " items, offer price: ",
+    " 点、割引価格："
+  ],
+  "」手動商品原價每滿 ": [
+    "”: for each qualifying amount of manually added items at original prices: ",
+    "」の手動追加商品の定価合計が次の金額に達するごとに："
+  ],
+  "，免費贈送 ": [
+    "; receive for free: ",
+    "、無料特典："
+  ],
+  "單筆最多贈送：": [
+    "Gift limit per order: ",
+    "1注文の特典上限："
+  ],
+  "不限制": [
+    "Unlimited",
+    "無制限"
+  ],
+  " 件；贈品單價 0 元。": [
+    " units; each gift is free.",
+    " 点。特典の単価は0です。"
+  ],
+  "依滿額倍數自動加入，受可販售庫存限制；自動贈品不計入門檻。": [
+    "Added automatically for each threshold multiple, within available stock. Automatic gifts do not count toward the threshold.",
+    "金額条件の達成回数に応じて販売可能な在庫内で自動追加します。自動追加の特典は条件金額に含めません。"
+  ],
+  "目前金額 ": [
+    "Current amount: ",
+    "現在の金額："
+  ],
+  "，可贈送 ": [
+    "; eligible gifts: ",
+    "、特典数量："
+  ],
+  "每折扣 1 件，需同時滿足以下一組條件：": [
+    "Each discounted unit requires one complete set of these conditions:",
+    "1点の割引ごとに、次の条件1組を満たす必要があります："
+  ],
+  "每件折扣各需一組條件數量；不足一組不折扣。": [
+    "Each discounted unit requires a separate complete set of quantities. Incomplete sets do not qualify.",
+    "割引1点ごとに条件の数量1組が必要です。1組に満たない分は割引されません。"
+  ],
+  "目前符合 ": [
+    "Currently qualifying sets: ",
+    "現在の条件達成数："
+  ],
+  " 組，可折扣 ": [
+    "; discounted units: ",
+    " 組、割引対象："
+  ],
+  "同商品活動擇總折抵最多的一項，再套用訂單優惠與優惠碼。第 n 件每滿一組折扣一次；套組逐件檢查條件；滿額贈按金額倍數免費贈送。": [
+    "The best item offer applies, followed by order discounts and a coupon. Nth-item offers repeat per group; bundles require quantities per discounted unit; spending gifts repeat per threshold multiple.",
+    "商品ごとに最もお得な割引を適用した後、注文割引とクーポンを適用します。n点目割引は組ごと、セット割引は1点ごとの条件、購入額特典は金額条件の倍数で計算します。"
+  ],
+  "每組折扣所需本商品件數": [
+    "Target product units required per discounted unit",
+    "割引1点に必要な対象商品の数量"
+  ],
+  "第 n 件活動按組數折扣較低價商品，不提高原價。": [
+    "Nth-item offers discount lower-priced items per group, never increasing original prices.",
+    "n点目割引は組数に応じて低価格の商品を割引し、定価を上回りません。"
+  ],
+  "每滿 n 件折扣 1 件；例如 n＝2，買 4 件折扣 2 件。": [
+    "Discount one item per n items; for n=2, buying 4 discounts 2.",
+    "n点ごとに1点割引。n=2なら4点購入で2点を割引します。"
+  ],
+  "單筆最多贈送件數（留白＝不限制）": [
+    "Maximum gifts per order (blank = unlimited)",
+    "1注文の特典上限（空欄＝無制限）"
+  ],
+  "每滿 n 件折扣 1 件，依原價由低至高套用，可重複累計。": [
+    "Discount one item per n items, starting with the lowest original prices. Repeats per group.",
+    "n点ごとに1点、定価の安い順に割引します。繰り返し適用されます。"
+  ],
+  "每滿一次門檻免費送 1 件，上限留白不限制；自動贈品不計入門檻，不足庫存時只加入可販售數量。": [
+    "One free gift per threshold multiple; blank limit means unlimited. Automatic gifts do not count toward the threshold; stock limits apply.",
+    "条件金額に達するごとに1点無料。上限が空欄なら無制限です。自動特典は条件金額に含めず、販売可能な在庫内で追加します。"
+  ],
+  "：滿額贈已達標，但庫存不足，僅加入可販售數量": [
+    ": gift threshold reached, but stock is limited; only available units were added.",
+    "：特典条件を達成しましたが在庫不足のため、販売可能な数量のみ追加しました。"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
@@ -1667,4 +1769,4 @@ function localizedDefault(value,original,language){
  const variants=[original,ui(original,'en'),ui(original,'ja')];
  return variants.includes(value)?ui(original,language):value;
 }
-function giftMessageText(message){const suffix='：滿額贈已達標，但庫存不足，未自動加入';return message.endsWith(suffix)?message.slice(0,-suffix.length)+ui(suffix):message}
+function giftMessageText(message){const suffix='：滿額贈已達標，但庫存不足，僅加入可販售數量';return message.endsWith(suffix)?message.slice(0,-suffix.length)+ui(suffix):message}
