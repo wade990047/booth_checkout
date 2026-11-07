@@ -1601,6 +1601,56 @@ Object.assign(uiDictionary,{
     "すべての取引を削除し、在庫を戻しました"
   ]
 });
+Object.assign(uiDictionary,{
+  "顯示分類": [
+    "Filter category",
+    "表示するカテゴリ"
+  ],
+  "所有分類": [
+    "All categories",
+    "すべてのカテゴリ"
+  ],
+  "購買數量": [
+    "Purchase quantity",
+    "購入数量"
+  ],
+  "無分類為系統分類，不能移除": [
+    "Uncategorized is a system category and cannot be removed.",
+    "未分類はシステムカテゴリのため削除できません。"
+  ],
+  "歷史交易同步更新編號。": [
+    "Historical transaction codes are updated as well.",
+    "過去の取引の商品番号も更新します。"
+  ],
+  "套用後同步更新此分類的所有商品編號；歷史交易同步更新編號。": [
+    "Updates all product codes in this category and their historical transaction codes.",
+    "このカテゴリの全商品と過去の取引の商品番号を更新します。"
+  ],
+  "商品與庫存資料將移除，優惠綁定將同步清理。": [
+    "Product and stock data will be removed, and promotion references cleaned up.",
+    "商品と在庫データを削除し、キャンペーンの関連設定も整理します。"
+  ],
+  "刪除分類會將商品移至無分類，保留商品編號；使用此分類的優惠活動將一併移除。": [
+    "Deleting a category moves its products to Uncategorized and keeps their codes. Promotions using this category are also removed.",
+    "カテゴリを削除すると商品を未分類へ移動し、商品番号は保持します。このカテゴリを使うキャンペーンも削除します。"
+  ],
+  "」及其分類編號，商品移至無分類；使用此分類的優惠活動也會移除，交易保留。": [
+    "” and its prefix. Products move to Uncategorized; category promotions are removed. Transactions remain.",
+    "」とその接頭辞を削除します。商品を未分類へ移動し、このカテゴリのキャンペーンも削除します。取引は保持します。"
+  ],
+  "已有交易的商品不可刪除；其餘商品刪除時會自動清理優惠綁定與失效活動。": [
+    "Products with transactions cannot be deleted. Other deletions automatically clean up promotion references and invalid campaigns.",
+    "取引のある商品は削除できません。それ以外の商品を削除すると、関連設定と無効になったキャンペーンを自動で整理します。"
+  ],
+  "所選商品仍有交易，尚未刪除任何商品": [
+    "Selected products have transactions. No products were deleted.",
+    "選択商品に取引があるため、商品は削除されていません。"
+  ],
+  " 件商品及其庫存資料，並清理優惠綁定與失效活動。建議先匯出備份。": [
+    " products and their stock data, cleaning up related promotions. Export a backup first.",
+    " 点とその在庫を削除し、関連するキャンペーンを整理します。先にバックアップを出力してください。"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}

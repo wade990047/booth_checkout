@@ -6,7 +6,7 @@ const original=JSON.stringify(d),zero=L.zeroInventory(d);
 assert.deepEqual(zero.products.map(p=>L.stock(zero,p)),[0,0,0]);assert.equal(zero.products[0].initial,2);assert.equal(zero.products[0].printed,20);assert.deepEqual(zero.transactions,d.transactions);assert.equal(JSON.stringify(d),original);assert.equal(L.availableStock(zero,zero.products[0]),1);
 const off=L.bulkDisplaySetting(zero,['a','b'],false);assert.equal(L.availableStock(off,off.products[0]),0);assert.equal(off.products[2].sellDisplay,true);assert.equal(zero.products[0].sellDisplay,true);
 assert.throws(()=>L.deleteSelectedProducts(d,['b','a']),/交易/);assert.equal(d.products.length,3);assert.deepEqual(L.deleteSelectedProducts(d,['b']).products.map(p=>p.id),['a','c']);
-for(const rule of [{id:'r',productId:'b'},{id:'r',requires:[{id:'b',qty:1}]},{id:'r',productIds:['b']}]){const bound={...d,promotions:[rule]};assert.throws(()=>L.deleteSelectedProducts(bound,['b']),/優惠/)}
+for(const rule of [{id:'r',productId:'b'},{id:'r',requires:[{id:'b',qty:1}]},{id:'r',productIds:['b']}]){const bound={...d,promotions:[rule]};assert.equal(L.deleteSelectedProducts(bound,['b']).products.some(p=>p.id==='b'),false)}
 assert.deepEqual(L.sortProductItems(d.products).map(p=>p.sku),['1','2','10']);assert.deepEqual(d.products.map(p=>p.sku),['10','2','1']);
 const priced=L.priceCart({...d,transactions:[]},{a:1,b:1,c:1});assert.deepEqual(priced.items.map(p=>p.sku),['1','2','10']);
 const csvData=structuredClone(d);csvData.products[0].name='=SUM(1,2)';csvData.products[2].name='line"one\nline2';

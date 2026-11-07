@@ -9,3 +9,5 @@ html:not([lang="zh-Hant"]) .offer-detail summary{flex-wrap:wrap}
 html:not([lang="zh-Hant"]) .offer-detail summary small{white-space:normal}
 
 .inventory-bulk{flex-wrap:wrap;margin:16px 0}.inventory-bulk button{white-space:normal}
+
+.qty .quantity-input{width:64px;min-width:0;padding:5px;text-align:center}.inventory-filter{display:flex;align-items:center;gap:12px;margin:12px 0}.inventory-filter select{max-width:280px}

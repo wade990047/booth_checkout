@@ -7,9 +7,9 @@ p.sellDisplay=false;assert.equal(L.availableStock(d,p),0);
 p.sellDisplay=true;assert.equal(L.availableStock(d,p),1);
 p.initial=2;assert.equal(L.availableStock(d,p),3);p.sellDisplay=false;assert.equal(L.availableStock(d,p),2);
 d.transactions=[{number:1,items:[{id:'p',qty:3}]}];assert.equal(L.stock(d,p),-1);assert.equal(L.availableStock(d,p),0);p.sellDisplay=true;assert.equal(L.availableStock(d,p),0);d.transactions=[];
-assert.throws(()=>L.removeEmptyCategory(d,'保留'),/仍有商品/);
+assert.equal(L.removeEmptyCategory(d,'保留').products[0].category,'無分類');
 for(const r of [{type:'category'},{type:'order_category'},{type:'nth_price',scope:'category'},{type:'nth_percent',scope:'category'}]){
- d.promotions=[{id:'r',category:'空分類',...r}];assert.throws(()=>L.removeEmptyCategory(d,'空分類'),/優惠活動/);
+ d.promotions=[{id:'r',category:'空分類',...r}];assert.equal(L.removeEmptyCategory(d,'空分類').promotions.length,0);
 }
 d.promotions=[];const cleaned=L.removeEmptyCategory(d,'空分類');assert.deepEqual(cleaned.categories,['保留']);assert.equal(cleaned.categoryIds['空分類'],undefined);assert.equal(d.categories.length,2);assert.deepEqual(cleaned.products,d.products);assert.throws(()=>L.removeEmptyCategory(d,'不存在'),/找不到/);
 const gift={...p,id:'g',sku:'02',initial:0,sellDisplay:false};d.products.push(gift);d.promotions=[{id:'r',type:'category',productId:'g',category:'保留',threshold:100,amount:100,minQty:1,requires:[]}];
