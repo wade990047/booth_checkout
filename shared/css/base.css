@@ -7,3 +7,5 @@ html:not([lang="zh-Hant"]) .nav button{overflow-wrap:anywhere}
 html:not([lang="zh-Hant"]) .formactions,html:not([lang="zh-Hant"]) .actions{flex-wrap:wrap}
 html:not([lang="zh-Hant"]) .offer-detail summary{flex-wrap:wrap}
 html:not([lang="zh-Hant"]) .offer-detail summary small{white-space:normal}
+
+.inventory-bulk{flex-wrap:wrap;margin:16px 0}.inventory-bulk button{white-space:normal}

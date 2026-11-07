@@ -15,7 +15,7 @@ d.promotions=[];const cleaned=L.removeEmptyCategory(d,'空分類');assert.deepEq
 const gift={...p,id:'g',sku:'02',initial:0,sellDisplay:false};d.products.push(gift);d.promotions=[{id:'r',type:'category',productId:'g',category:'保留',threshold:100,amount:100,minQty:1,requires:[]}];
 assert.equal(L.resolveGiftCart(d,{p:1}).cart.g,undefined);assert.equal(L.resolveGiftCart(d,{p:1}).messages.length,1);gift.sellDisplay=true;assert.equal(L.resolveGiftCart(d,{p:1}).cart.g,1);
 // Verify stock toggles trim an existing cart and do not alter transaction history.
-const ui=s=>s;const input={dataset:{display:'p'},checked:false},ctx={...L,ui,db:d,manualCart:{p:3},document:{querySelectorAll:()=>[input]},structuredClone,render:()=>{},toast:()=>{}};
+const ui=s=>s;const input={dataset:{display:'p'},checked:false},ctx={...L,ui,db:d,manualCart:{p:3},$:()=>null,document:{querySelectorAll:selector=>selector==='[data-display]'?[input]:[]},structuredClone,render:()=>{},toast:()=>{}};
 ctx.persist=next=>{ctx.db=next;return true};vm.createContext(ctx);vm.runInContext(fs.readFileSync('pages/inventory/inventory.js','utf8'),ctx);ctx.bindInventoryControls();input.onchange();assert.equal(ctx.db.products[0].sellDisplay,false);assert.equal(ctx.manualCart.p,2);
 ctx.persist=()=>false;input.checked=true;ctx.bindInventoryControls();input.onchange();assert.equal(input.checked,false,'restore toggle after storage failure');
 // Import accepts the optional boolean, rejects malformed values, and preserves old backups.

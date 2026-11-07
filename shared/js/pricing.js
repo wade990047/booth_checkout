@@ -1,7 +1,7 @@
 /* Pure checkout rules. Legacy offers are adapted without changing saved data. */
 function sold(db,id){return db.transactions.reduce((s,t)=>s+t.items.filter(i=>i.id===id).reduce((a,i)=>a+i.qty,0),0)}
 function stock(db,p){return p.initial-sold(db,p.id)}
-// Older products retain the original display-item policy; new products store false explicitly.
+// Display items are allowed by default; explicit opt-out is preserved.
 function sellsDisplay(p){return p.sellDisplay!==false}
 function availableStock(db,p){return Math.max(0,stock(db,p)+(sellsDisplay(p)?1:0))}
 function categoryRemovalReason(db,name){
@@ -57,7 +57,7 @@ function priceCart(db,cart,code='',qualificationCart=cart){
  if(order)offers.push({id:order.r.id,name:order.r.name,saving:orderDiscount,scope:'order'});
  const coupon=db.coupons.find(c=>c.code.toUpperCase()===code.trim().toUpperCase());
  const discount=coupon?Math.min(subtotal,coupon.type==='percent'?Math.round(subtotal*coupon.value/100):coupon.value):0;
- return {items,offers,original,itemSubtotal,orderDiscount,subtotal,discount,total:Math.max(0,subtotal-discount),coupon};
+ return {items:sortProductItems(items),offers,original,itemSubtotal,orderDiscount,subtotal,discount,total:Math.max(0,subtotal-discount),coupon};
 }
 function nextNumber(db){return Math.max(0,...db.transactions.map(t=>t.number))+1}
 function validPromotions(d){
@@ -71,7 +71,7 @@ function validPromotions(d){
   return positive(r.minQty)&&(r.discountLimit==null||positive(r.discountLimit))&&Array.isArray(r.requires)&&r.requires.every(x=>x.id!==p.id&&d.products.some(p=>p.id===x.id)&&positive(x.qty))&&(r.type==='bundle'?nonnegative(r.offer)&&r.offer<=p.price:d.categories.includes(r.category)&&positive(r.threshold)&&positive(r.amount));
  });
 }
-if(typeof module!=='undefined')module.exports={sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
+if(typeof module!=='undefined')module.exports={sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
 
 // Auto-added quantities never contribute to gift thresholds or required-item conditions.
 function resolveGiftCart(db,manual,declined=new Set()){
@@ -87,4 +87,24 @@ function resolveGiftCart(db,manual,declined=new Set()){
  }
  for(const [id,qty] of Object.entries(needed)){auto[id]=qty;cart[id]=(manual[id]||0)+qty}
  return {cart,auto,messages,declined:new Set([...declined].filter(id=>eligibleIds.has(id)))};
+}
+
+function sortProductItems(items){return [...items].sort((a,b)=>String(a.sku).localeCompare(String(b.sku),'zh-TW',{numeric:true})||String(a.id).localeCompare(String(b.id)))}
+function zeroInventory(data){const next=structuredClone(data);for(const p of next.products)p.initial=sold(next,p.id);return next}
+function bulkDisplaySetting(data,ids,enabled){const chosen=new Set(ids),next=structuredClone(data);for(const p of next.products)if(chosen.has(p.id))p.sellDisplay=enabled;return next}
+function productDeletionReason(data,id){
+ if(data.transactions.some(t=>t.items.some(i=>i.id===id)))return '此商品已有交易，請先刪除相關交易再刪除商品';
+ if(allPromotions(data).some(r=>r.productId===id&&!r.id.startsWith('legacy:')||r.requires?.some(x=>x.id===id)||r.productIds?.includes(id)))return '此商品已綁定優惠，請先解除其他商品的綁定';
+ return '';
+}
+function deleteSelectedProducts(data,ids){
+ const chosen=new Set(ids);for(const p of data.products)if(chosen.has(p.id)){const reason=productDeletionReason(data,p.id);if(reason)throw Error(reason)}
+ const next=structuredClone(data);next.products=next.products.filter(p=>!chosen.has(p.id));return next;
+}
+function inventoryCsv(data,ids,columns,labels,yes='Yes',no='No'){
+ const chosen=new Set(ids),keys=columns.filter(k=>Object.prototype.hasOwnProperty.call(labels,k));
+ const cell=(value,text=false)=>{let s=String(value??'');if(text&&/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+ const rows=[keys.map(k=>cell(labels[k],true)).join(',')];
+ for(const p of sortProductItems(data.products).filter(p=>chosen.has(p.id)))rows.push(keys.map(k=>{const v=k==='current'?stock(data,p):k==='sold'?sold(data,p.id):k==='sellDisplay'?(sellsDisplay(p)?yes:no):p[k];return cell(v,['sku','name','category','sellDisplay'].includes(k))}).join(','));
+ return '\uFEFF'+rows.join('\r\n')+'\r\n';
 }

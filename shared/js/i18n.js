@@ -956,9 +956,9 @@ const uiDictionary={
     "Current stock = opening stock − units sold",
     "現在庫＝開始在庫−販売数"
   ],
-  "上方勾選控制顯示欄位；表格內「販售展示品」控制該商品能否額外販售 1 件，變更立即儲存。新商品預設不販售展示品。": [
-    "The checkboxes above control visible columns. In each row, “Sell display item” allows one extra item. Changes save immediately. New products default to off.",
-    "上のチェックで表示列を選択します。各行の「展示品を販売する」を有効にすると1点追加販売できます。変更は即時保存され、新商品では無効が初期値です。"
+  "上方勾選控制顯示欄位；表格內「販售展示品」控制該商品能否額外販售 1 件，變更立即儲存。新商品預設開啟展示品販售。": [
+    "The checkboxes above control visible columns. In each row, “Sell display item” allows one extra item. Changes save immediately. New products default to on.",
+    "上のチェックで表示列を選択します。各行の「展示品を販売する」を有効にすると1点追加販売できます。変更は即時保存され、新商品では有効が初期値です。"
   ],
   "管理": [
     "Actions",
@@ -1467,6 +1467,140 @@ const uiDictionary={
 };
 
 uiDictionary['已加入範例商品，可編輯或刪除']=['Sample products added. You can edit or delete them.','サンプル商品を追加しました。編集・削除できます。'];
+Object.assign(uiDictionary,{
+  "新商品預設開啟展示品販售。": [
+    "Display-item sales are enabled for new products.",
+    "新しい商品は展示品販売が初期設定で有効です。"
+  ],
+  "所有商品庫存歸零": [
+    "Reset all stock to zero",
+    "全商品の在庫をゼロにする"
+  ],
+  "商品管理": [
+    "Manage products",
+    "商品管理"
+  ],
+  "所選商品：開啟展示品": [
+    "Selected: enable display sales",
+    "選択商品：展示品販売を有効化"
+  ],
+  "所選商品：關閉展示品": [
+    "Selected: disable display sales",
+    "選択商品：展示品販売を無効化"
+  ],
+  "匯出所選 CSV": [
+    "Export selected CSV",
+    "選択商品をCSV出力"
+  ],
+  "已選取 ": [
+    "Selected: ",
+    "選択済み："
+  ],
+  "全選商品": [
+    "Select all products",
+    "すべての商品を選択"
+  ],
+  "選取 ": [
+    "Select ",
+    "選択："
+  ],
+  "所有商品庫存歸零？": [
+    "Reset all product stock to zero?",
+    "全商品の在庫をゼロにしますか？"
+  ],
+  "將所有商品的目前庫存調整為 0，保留交易與印製庫存。展示品開啟時仍可販售 1 件；刪除舊交易仍會返還庫存。": [
+    "Current stock will become 0; transactions and printed quantities remain. Display sales still allow one unit. Deleting past transactions will restore stock.",
+    "現在庫を0にし、取引と印刷在庫は保持します。展示品販売が有効なら1点販売できます。過去の取引を削除すると在庫が戻ります。"
+  ],
+  "所有商品目前庫存已歸零": [
+    "All current stock is now zero",
+    "全商品の現在庫をゼロにしました"
+  ],
+  "開啟所選商品展示品販售？": [
+    "Enable display sales for selected products?",
+    "選択商品の展示品販売を有効にしますか？"
+  ],
+  "關閉所選商品展示品販售？": [
+    "Disable display sales for selected products?",
+    "選択商品の展示品販売を無効にしますか？"
+  ],
+  "將更新 ": [
+    "Products to update: ",
+    "更新する商品数："
+  ],
+  " 件商品，購物袋數量會依新上限調整。": [
+    " products. Bag quantities will respect the new limits.",
+    " 点。カートの数量は新しい上限に合わせて調整されます。"
+  ],
+  "展示品販售設定已更新": [
+    "Display sales settings updated",
+    "展示品販売設定を更新しました"
+  ],
+  "勾選要刪除的商品。有交易或優惠綁定的商品須先解除關聯，才可刪除。": [
+    "Select products to delete. Resolve transaction and promotion references before deletion.",
+    "削除する商品を選択してください。取引やキャンペーンとの関連を先に解除する必要があります。"
+  ],
+  "刪除所選商品": [
+    "Delete selected products",
+    "選択商品を削除"
+  ],
+  "所選商品仍有交易或優惠綁定，尚未刪除任何商品": [
+    "Selected products have transaction or promotion references. No products were deleted.",
+    "選択商品に取引またはキャンペーンとの関連があるため、商品は削除されていません。"
+  ],
+  "刪除所選商品？": [
+    "Delete selected products?",
+    "選択商品を削除しますか？"
+  ],
+  "將永久刪除 ": [
+    "Permanently delete ",
+    "完全に削除する商品数："
+  ],
+  " 件商品及其庫存資料。建議先匯出備份。": [
+    " products and their stock data. Export a backup first.",
+    " 点とその在庫情報。先にバックアップを出力してください。"
+  ],
+  "所選商品已刪除": [
+    "Selected products deleted",
+    "選択商品を削除しました"
+  ],
+  "開啟": [
+    "Enabled",
+    "有効"
+  ],
+  "關閉": [
+    "Disabled",
+    "無効"
+  ],
+  "刪除所有紀錄": [
+    "Delete all records",
+    "すべての履歴を削除"
+  ],
+  "刪除所有交易紀錄？（1/2）": [
+    "Delete all transactions? (1/2)",
+    "すべての取引履歴を削除しますか？（1/2）"
+  ],
+  "目前共有 ": [
+    "Total: ",
+    "現在の取引数："
+  ],
+  " 筆交易。刪除後會返還所有商品庫存，建議先匯出備份。": [
+    " transactions. Deletion restores all sold stock. Export a backup first.",
+    " 件。削除後、販売済み商品の在庫が戻ります。先にバックアップを出力してください。"
+  ],
+  "最後確認：永久刪除全部交易（2/2）": [
+    "Final confirmation: permanently delete all transactions (2/2)",
+    "最終確認：すべての取引を完全に削除（2/2）"
+  ],
+  "此操作無法直接復原。所有交易明細將移除、庫存返還，下一筆交易編號從 1 開始。": [
+    "This cannot be directly undone. All transaction details will be removed, stock restored, and the next transaction number will be 1.",
+    "この操作は直接元に戻せません。すべての取引明細を削除し、在庫を戻します。次の取引番号は1になります。"
+  ],
+  "所有交易已刪除，庫存已返還": [
+    "All transactions deleted and stock restored",
+    "すべての取引を削除し、在庫を戻しました"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
