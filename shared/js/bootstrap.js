@@ -3,5 +3,5 @@ try{db=JSON.parse(localStorage.getItem(KEY))||fresh()}catch{db=fresh()}
 const allowedPages=['shop','inventory','history','promotions','design'];
 const initialPage=document.body.dataset.initialPage;
 page=allowedPages.includes(initialPage)?initialPage:'shop';
-window.addEventListener('storage',e=>{if(e.key===KEY){try{const next=JSON.parse(e.newValue);if(validateData(next)){db=next;resetCart();render();toast('其他分頁已更新資料，購物袋已重設')}}catch{}}});
+window.addEventListener('storage',e=>{if(e.key===KEY){try{const next=JSON.parse(e.newValue);if(validateData(next)){db=next;designDraft=null;resetCart();render();toast(ui('其他分頁已更新資料，購物袋已重設'))}}catch{}}});
 render();

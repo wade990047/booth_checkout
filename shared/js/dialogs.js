@@ -6,4 +6,4 @@ function openModal(html){$('#modal').innerHTML=html;if(!$('#modal').open)$('#mod
 
 function closeModal(){$('#modal').close()}
 
-function confirmDialog(title,body,fn){openModal(`<h2>${title}</h2><p class="sub" style="line-height:2">${body}</p><div class="formactions"><button id="no">返回</button><button id="yes" class="primary">確認</button></div>`);$('#no').onclick=closeModal;$('#yes').onclick=()=>{closeModal();fn()}}
+function confirmDialog(title,body,fn){openModal(uiTemplate`<h2>${title}</h2><p class="sub" style="line-height:2">${body}</p><div class="formactions"><button id="no">返回</button><button id="yes" class="primary">確認</button></div>`);$('#no').onclick=closeModal;$('#yes').onclick=()=>{closeModal();fn()}}
