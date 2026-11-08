@@ -1753,6 +1753,44 @@ Object.assign(uiDictionary,{
     "：特典条件を達成しましたが在庫不足のため、販売可能な数量のみ追加しました。"
   ]
 });
+Object.assign(uiDictionary,{
+  "所屬分類（可複選）": [
+    "Categories (multiple selection)",
+    "所属カテゴリ（複数選択可）"
+  ],
+  "編號繼承分類": [
+    "Category for code prefix",
+    "番号の接頭辞を継承するカテゴリ"
+  ],
+  "請選擇所屬分類與編號繼承分類": [
+    "Select categories and a category for the code prefix.",
+    "所属カテゴリと番号を継承するカテゴリを選択してください。"
+  ],
+  "套用後更新繼承此分類的商品編號；歷史交易同步更新編號。": [
+    "Updates codes for products inheriting this category and their historical transactions.",
+    "このカテゴリを継承する商品と過去の取引の商品番号を更新します。"
+  ],
+  "分類編號已套用至繼承此分類的商品": [
+    "Prefix applied to products inheriting this category",
+    "このカテゴリを継承する商品に接頭辞を適用しました"
+  ],
+  "分類移除後商品編號重複，請先調整商品編號": [
+    "Removing this category would duplicate product codes. Adjust codes first.",
+    "カテゴリ削除後に商品番号が重複します。先に番号を調整してください。"
+  ],
+  "刪除分類會保留商品的其他分類；沒有其他分類時移至無分類。編號繼承分類被移除時改用剩餘分類，歷史交易同步改號；相關分類優惠一併移除。": [
+    "Other categories remain; products without one move to Uncategorized. If the prefix category is removed, a remaining category is used and historical codes are updated. Related category promotions are removed.",
+    "他の所属カテゴリは保持し、残らない場合は未分類へ移します。番号の継承先を削除すると残ったカテゴリを使い、取引番号も更新します。該当カテゴリのキャンペーンは削除します。"
+  ],
+  "」及其分類編號，商品保留其他分類，必要時移至無分類並更新編號；分類優惠移除，交易保留。": [
+    "” and its prefix. Other categories remain; products may move to Uncategorized and codes update. Category promotions are removed; transactions remain.",
+    "」と接頭辞を削除します。他のカテゴリは保持し、必要に応じて未分類へ移動して番号を更新します。カテゴリ特典は削除し、取引は保持します。"
+  ],
+  "將所有商品的目前庫存調整為 0，保留交易紀錄。展示品開啟時仍可販售 1 件；刪除舊交易仍會返還庫存。": [
+    "Current stock becomes 0; transaction history remains. Display sales allow one extra unit; deleting old transactions restores stock.",
+    "現在庫を0にして取引履歴を保持します。展示品販売が有効なら1点追加販売できます。過去の取引を削除すると在庫が戻ります。"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}

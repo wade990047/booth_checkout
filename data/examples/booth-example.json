@@ -24,7 +24,6 @@
       "name": "套組 A｜原價100、優惠50",
       "category": "組合示範",
       "price": 100,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -32,7 +31,11 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e9e2d5%22%2F%3E%3Crect%20x%3D%2265%22%20y%3D%2232%22%20width%3D%22170%22%20height%3D%22208%22%20rx%3D%223%22%20fill%3D%22%23fffdf6%22%20transform%3D%22rotate(-8%20150%20140)%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22122%22%20r%3D%2249%22%20fill%3D%22%237e9888%22%2F%3E%3Cpath%20d%3D%22M120%20155q30-65%2060%200%22%20fill%3D%22%23d8ddbc%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22202%22%20text-anchor%3D%22middle%22%20font-size%3D%2213%22%20fill%3D%22%237e9888%22%3EA%20LITTLE%20DAY%3C%2Ftext%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e9e2d5%22%2F%3E%3Crect%20x%3D%2265%22%20y%3D%2232%22%20width%3D%22170%22%20height%3D%22208%22%20rx%3D%223%22%20fill%3D%22%23fffdf6%22%20transform%3D%22rotate(-8%20150%20140)%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22122%22%20r%3D%2249%22%20fill%3D%22%237e9888%22%2F%3E%3Cpath%20d%3D%22M120%20155q30-65%2060%200%22%20fill%3D%22%23d8ddbc%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22202%22%20text-anchor%3D%22middle%22%20font-size%3D%2213%22%20fill%3D%22%237e9888%22%3EA%20LITTLE%20DAY%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "categories": [
+        "組合示範",
+        "任選優惠價"
+      ]
     },
     {
       "id": "sample-bundle-b",
@@ -41,7 +44,6 @@
       "name": "套組 B｜每組需2件",
       "category": "組合示範",
       "price": 40,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -49,7 +51,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e7dd%22%2F%3E%3Cpath%20d%3D%22M83%20100h134l17%20147H66z%22%20fill%3D%22%23faf5e8%22%2F%3E%3Cpath%20d%3D%22M117%20106V80q33-55%2066%200v26%22%20fill%3D%22none%22%20stroke%3D%22%23c9bea9%22%20stroke-width%3D%2212%22%2F%3E%3Cpath%20d%3D%22M120%20188q30-80%2060%200%22%20fill%3D%22%23aeb88c%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%2212%22%20fill%3D%22%23f8ebcb%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e7dd%22%2F%3E%3Cpath%20d%3D%22M83%20100h134l17%20147H66z%22%20fill%3D%22%23faf5e8%22%2F%3E%3Cpath%20d%3D%22M117%20106V80q33-55%2066%200v26%22%20fill%3D%22none%22%20stroke%3D%22%23c9bea9%22%20stroke-width%3D%2212%22%2F%3E%3Cpath%20d%3D%22M120%20188q30-80%2060%200%22%20fill%3D%22%23aeb88c%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%2212%22%20fill%3D%22%23f8ebcb%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "組合示範"
+      ]
     },
     {
       "id": "sample-bundle-c",
@@ -58,7 +63,6 @@
       "name": "套組 C｜每組需1件",
       "category": "組合示範",
       "price": 30,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -66,7 +70,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23f2e5df%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2269%22%20fill%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2259%22%20fill%3D%22%23c78670%22%2F%3E%3Cpath%20d%3D%22M122%20165v-45l15%2013%2013-12%2013%2012%2015-13v45z%22%20fill%3D%22%23fff6de%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%22161%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23f2e5df%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2269%22%20fill%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2259%22%20fill%3D%22%23c78670%22%2F%3E%3Cpath%20d%3D%22M122%20165v-45l15%2013%2013-12%2013%2012%2015-13v45z%22%20fill%3D%22%23fff6de%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%22161%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "組合示範"
+      ]
     },
     {
       "id": "sample-nth-a",
@@ -75,7 +82,6 @@
       "name": "任選 A｜150元",
       "category": "任選優惠價",
       "price": 150,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -83,7 +89,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e5e9e9%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%2267%22%20width%3D%22150%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fffdf6%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2286%22%20width%3D%22115%22%20height%3D%22100%22%20rx%3D%224%22%20fill%3D%22%237797a4%22%2F%3E%3Cpath%20d%3D%22M104%20166l30-47%2025%2028%2022-15%2016%2034z%22%20fill%3D%22%23dbe4d6%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22111%22%20r%3D%2211%22%20fill%3D%22%23efe1ae%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e5e9e9%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%2267%22%20width%3D%22150%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fffdf6%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2286%22%20width%3D%22115%22%20height%3D%22100%22%20rx%3D%224%22%20fill%3D%22%237797a4%22%2F%3E%3Cpath%20d%3D%22M104%20166l30-47%2025%2028%2022-15%2016%2034z%22%20fill%3D%22%23dbe4d6%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22111%22%20r%3D%2211%22%20fill%3D%22%23efe1ae%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "任選優惠價"
+      ]
     },
     {
       "id": "sample-nth-b",
@@ -92,7 +101,6 @@
       "name": "任選 B｜120元",
       "category": "任選優惠價",
       "price": 120,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -100,7 +108,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23efe7cd%22%2F%3E%3Crect%20x%3D%2290%22%20y%3D%2266%22%20width%3D%22120%22%20height%3D%22171%22%20rx%3D%2214%22%20fill%3D%22%23fffdf6%22%2F%3E%3Cpath%20d%3D%22M113%20172q37-95%2074%200%22%20fill%3D%22%23b6a26a%22%2F%3E%3Cpath%20d%3D%22M130%20144l20-36%2020%2036%22%20fill%3D%22%238e9c73%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22208%22%20text-anchor%3D%22middle%22%20font-size%3D%2212%22%20fill%3D%22%23b6a26a%22%3ESLOW%20DAYS%3C%2Ftext%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23efe7cd%22%2F%3E%3Crect%20x%3D%2290%22%20y%3D%2266%22%20width%3D%22120%22%20height%3D%22171%22%20rx%3D%2214%22%20fill%3D%22%23fffdf6%22%2F%3E%3Cpath%20d%3D%22M113%20172q37-95%2074%200%22%20fill%3D%22%23b6a26a%22%2F%3E%3Cpath%20d%3D%22M130%20144l20-36%2020%2036%22%20fill%3D%22%238e9c73%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22208%22%20text-anchor%3D%22middle%22%20font-size%3D%2212%22%20fill%3D%22%23b6a26a%22%3ESLOW%20DAYS%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "categories": [
+        "任選優惠價"
+      ]
     },
     {
       "id": "sample-rate-a",
@@ -109,7 +120,6 @@
       "name": "六折 A｜150元",
       "category": "任選六折",
       "price": 150,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -117,7 +127,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e3eb%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%2292%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%23c0ae86%22%20stroke-width%3D%229%22%2F%3E%3Cpath%20d%3D%22M148%20120v25%22%20stroke%3D%22%23c0ae86%22%20stroke-width%3D%229%22%2F%3E%3Crect%20x%3D%22106%22%20y%3D%22142%22%20width%3D%2288%22%20height%3D%2292%22%20rx%3D%2230%22%20fill%3D%22%239990b0%22%2F%3E%3Cpath%20d%3D%22M125%20194q25-42%2050%200%22%20stroke%3D%22%23fff8ed%22%20stroke-width%3D%228%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e3eb%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%2292%22%20r%3D%2228%22%20fill%3D%22none%22%20stroke%3D%22%23c0ae86%22%20stroke-width%3D%229%22%2F%3E%3Cpath%20d%3D%22M148%20120v25%22%20stroke%3D%22%23c0ae86%22%20stroke-width%3D%229%22%2F%3E%3Crect%20x%3D%22106%22%20y%3D%22142%22%20width%3D%2288%22%20height%3D%2292%22%20rx%3D%2230%22%20fill%3D%22%239990b0%22%2F%3E%3Cpath%20d%3D%22M125%20194q25-42%2050%200%22%20stroke%3D%22%23fff8ed%22%20stroke-width%3D%228%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "任選六折"
+      ]
     },
     {
       "id": "sample-rate-b",
@@ -126,7 +139,6 @@
       "name": "六折 B｜120元",
       "category": "任選六折",
       "price": 120,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -134,7 +146,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e9e2d5%22%2F%3E%3Crect%20x%3D%2265%22%20y%3D%2232%22%20width%3D%22170%22%20height%3D%22208%22%20rx%3D%223%22%20fill%3D%22%23fffdf6%22%20transform%3D%22rotate(-8%20150%20140)%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22122%22%20r%3D%2249%22%20fill%3D%22%237e9888%22%2F%3E%3Cpath%20d%3D%22M120%20155q30-65%2060%200%22%20fill%3D%22%23d8ddbc%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22202%22%20text-anchor%3D%22middle%22%20font-size%3D%2213%22%20fill%3D%22%237e9888%22%3EA%20LITTLE%20DAY%3C%2Ftext%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e9e2d5%22%2F%3E%3Crect%20x%3D%2265%22%20y%3D%2232%22%20width%3D%22170%22%20height%3D%22208%22%20rx%3D%223%22%20fill%3D%22%23fffdf6%22%20transform%3D%22rotate(-8%20150%20140)%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22122%22%20r%3D%2249%22%20fill%3D%22%237e9888%22%2F%3E%3Cpath%20d%3D%22M120%20155q30-65%2060%200%22%20fill%3D%22%23d8ddbc%22%2F%3E%3Ctext%20x%3D%22150%22%20y%3D%22202%22%20text-anchor%3D%22middle%22%20font-size%3D%2213%22%20fill%3D%22%237e9888%22%3EA%20LITTLE%20DAY%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "categories": [
+        "任選六折"
+      ]
     },
     {
       "id": "sample-spend",
@@ -143,7 +158,6 @@
       "name": "集點商品｜每件250元",
       "category": "滿額贈示範",
       "price": 250,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -151,7 +165,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e7dd%22%2F%3E%3Cpath%20d%3D%22M83%20100h134l17%20147H66z%22%20fill%3D%22%23faf5e8%22%2F%3E%3Cpath%20d%3D%22M117%20106V80q33-55%2066%200v26%22%20fill%3D%22none%22%20stroke%3D%22%23c9bea9%22%20stroke-width%3D%2212%22%2F%3E%3Cpath%20d%3D%22M120%20188q30-80%2060%200%22%20fill%3D%22%23aeb88c%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%2212%22%20fill%3D%22%23f8ebcb%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e6e7dd%22%2F%3E%3Cpath%20d%3D%22M83%20100h134l17%20147H66z%22%20fill%3D%22%23faf5e8%22%2F%3E%3Cpath%20d%3D%22M117%20106V80q33-55%2066%200v26%22%20fill%3D%22none%22%20stroke%3D%22%23c9bea9%22%20stroke-width%3D%2212%22%2F%3E%3Cpath%20d%3D%22M120%20188q30-80%2060%200%22%20fill%3D%22%23aeb88c%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22160%22%20r%3D%2212%22%20fill%3D%22%23f8ebcb%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "滿額贈示範"
+      ]
     },
     {
       "id": "sample-gift",
@@ -160,7 +177,6 @@
       "name": "免費徽章｜原價80元",
       "category": "贈品",
       "price": 80,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -168,7 +184,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23f2e5df%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2269%22%20fill%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2259%22%20fill%3D%22%23c78670%22%2F%3E%3Cpath%20d%3D%22M122%20165v-45l15%2013%2013-12%2013%2012%2015-13v45z%22%20fill%3D%22%23fff6de%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%22161%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23f2e5df%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2269%22%20fill%3D%22%23ffffff%22%2F%3E%3Ccircle%20cx%3D%22150%22%20cy%3D%22143%22%20r%3D%2259%22%20fill%3D%22%23c78670%22%2F%3E%3Cpath%20d%3D%22M122%20165v-45l15%2013%2013-12%2013%2012%2015-13v45z%22%20fill%3D%22%23fff6de%22%2F%3E%3Ccircle%20cx%3D%22140%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3Ccircle%20cx%3D%22161%22%20cy%3D%22149%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "贈品"
+      ]
     },
     {
       "id": "sample-order",
@@ -177,7 +196,6 @@
       "name": "分類折抵商品｜每件200元",
       "category": "分類滿額折抵",
       "price": 200,
-      "printed": 50,
       "initial": 30,
       "sellDisplay": true,
       "offer": null,
@@ -185,7 +203,10 @@
       "discountLimit": null,
       "offerName": "",
       "requires": [],
-      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e5e9e9%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%2267%22%20width%3D%22150%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fffdf6%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2286%22%20width%3D%22115%22%20height%3D%22100%22%20rx%3D%224%22%20fill%3D%22%237797a4%22%2F%3E%3Cpath%20d%3D%22M104%20166l30-47%2025%2028%2022-15%2016%2034z%22%20fill%3D%22%23dbe4d6%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22111%22%20r%3D%2211%22%20fill%3D%22%23efe1ae%22%2F%3E%3C%2Fsvg%3E"
+      "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22280%22%20viewBox%3D%220%200%20300%20280%22%3E%3Crect%20width%3D%22300%22%20height%3D%22280%22%20fill%3D%22%23e5e9e9%22%2F%3E%3Crect%20x%3D%2274%22%20y%3D%2267%22%20width%3D%22150%22%20height%3D%22170%22%20rx%3D%2210%22%20fill%3D%22%23fffdf6%22%2F%3E%3Crect%20x%3D%2291%22%20y%3D%2286%22%20width%3D%22115%22%20height%3D%22100%22%20rx%3D%224%22%20fill%3D%22%237797a4%22%2F%3E%3Cpath%20d%3D%22M104%20166l30-47%2025%2028%2022-15%2016%2034z%22%20fill%3D%22%23dbe4d6%22%2F%3E%3Ccircle%20cx%3D%22180%22%20cy%3D%22111%22%20r%3D%2211%22%20fill%3D%22%23efe1ae%22%2F%3E%3C%2Fsvg%3E",
+      "categories": [
+        "分類滿額折抵"
+      ]
     }
   ],
   "transactions": [],

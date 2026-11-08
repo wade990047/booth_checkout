@@ -13,17 +13,17 @@ function removeEmptyCategory(db,name){
  const reason=categoryRemovalReason(db,name);if(reason)throw Error(reason);
  const next=structuredClone(db);next.categories=next.categories.filter(c=>c!==name);
  if(next.categoryIds)delete next.categoryIds[name];
- for(const p of next.products.filter(p=>p.category===name)){p.category='無分類';p.baseSku=p.sku}
- if(next.products.some(p=>p.category==='無分類')&&!next.categories.includes('無分類'))next.categories.push('無分類');
- for(const p of next.products.filter(p=>p.category==='無分類'))p.baseSku=p.sku;
- if(next.products.some(p=>p.category==='無分類')){next.categoryIds={...next.categoryIds,'無分類':''}}
+ for(const p of next.products){const groups=productCategories(p).filter(c=>c!==name);p.categories=groups.length?groups:['無分類'];if(p.category===name){const oldPrefix=db.categoryIds?.[name]||'';const base=p.baseSku??(p.sku.startsWith(oldPrefix)?p.sku.slice(oldPrefix.length):p.sku);p.category=p.categories[0];p.baseSku=p.category==='無分類'?p.sku:base;p.sku=(next.categoryIds?.[p.category]||'')+p.baseSku}}
+ if(next.products.some(p=>inCategory(p,'無分類'))&&!next.categories.includes('無分類'))next.categories.push('無分類');
+ if(new Set(next.products.map(p=>p.sku.toLowerCase())).size!==next.products.length)throw Error('分類移除後商品編號重複，請先調整商品編號');
+ syncTransactionSkus(next);
  next.promotions=(next.promotions||[]).filter(r=>!((r.type==='category'||r.type==='order_category'||isNthRule(r)&&r.scope==='category')&&r.category===name));return next;
 }
 function allPromotions(db){return [...db.products.filter(p=>p.offer!=null).map(p=>({id:'legacy:'+p.id,productId:p.id,name:p.offerName||p.name+'優惠',type:'bundle',offer:p.offer,minQty:p.minQty||1,discountLimit:p.discountLimit??null,requires:p.requires||[]})),...(db.promotions||[]).map(r=>r.type==='category'?{...r,minQty:1,requires:[]}:r)]}
 function isOrderRule(r){return r.type==='order_all'||r.type==='order_category'}
 function isNthRule(r){return r.type==='nth_price'||r.type==='nth_percent'}
-function scopeProducts(db,r){return db.products.filter(p=>r.type==='order_all'||(r.type==='order_category'||r.scope==='category'?p.category===r.category:(r.productIds||[]).includes(p.id)))}
-function relatedPromotion(db,r,p){if(isOrderRule(r)||isNthRule(r))return scopeProducts(db,r).some(x=>x.id===p.id);return r.productId===p.id||(r.requires||[]).some(x=>x.id===p.id)||(r.type==='category'&&p.category===r.category)}
+function scopeProducts(db,r){return db.products.filter(p=>r.type==='order_all'||(r.type==='order_category'||r.scope==='category'?inCategory(p,r.category):(r.productIds||[]).includes(p.id)))}
+function relatedPromotion(db,r,p){if(isOrderRule(r)||isNthRule(r))return scopeProducts(db,r).some(x=>x.id===p.id);return r.productId===p.id||(r.requires||[]).some(x=>x.id===p.id)||(r.type==='category'&&inCategory(p,r.category))}
 function productHasDiscount(db,r,p){if(isOrderRule(r))return false;if(isNthRule(r))return relatedPromotion(db,r,p)&&(r.type==='nth_price'?r.offer<p.price:r.rate<10&&p.price>0);return r.productId===p.id&&(r.type==='category'?p.price>0:r.offer<p.price)}
 function promotionState(db,cart,r,pricedItems,qualificationCart=cart){
  if(isOrderRule(r)){
@@ -39,7 +39,7 @@ function promotionState(db,cart,r,pricedItems,qualificationCart=cart){
  }
  const p=db.products.find(p=>p.id===r.productId);if(!p)return {eligible:false,relevant:false,saving:0};
  const basis=r.type==='category'?qualificationCart:cart;
- const qty=cart[p.id]||0,categoryTotal=db.products.filter(p=>p.category===r.category).reduce((s,p)=>s+p.price*(basis[p.id]||0),0);
+ const qty=cart[p.id]||0,categoryTotal=db.products.filter(p=>inCategory(p,r.category)).reduce((s,p)=>s+p.price*(basis[p.id]||0),0);
  const groups=r.type==='category'?giftAllowance(db,qualificationCart,r):Math.min(Math.floor(qty/(r.minQty||1)),...(r.requires||[]).map(x=>Math.floor((cart[x.id]||0)/x.qty)));
  const discountQty=Math.max(0,Math.min(qty,groups,r.discountLimit??Infinity)),eligible=discountQty>0,unit=r.type==='category'?0:Math.min(p.price,r.offer);
  return {eligible,relevant:qty>0||(r.requires||[]).some(x=>cart[x.id]>0)||(r.type==='category'&&categoryTotal>0),categoryTotal,groups,productId:p.id,discountQty,unit,saving:(p.price-unit)*discountQty};
@@ -76,7 +76,7 @@ function validPromotions(d){
   return positive(r.minQty)&&(r.discountLimit==null||positive(r.discountLimit))&&Array.isArray(r.requires)&&r.requires.every(x=>x.id!==p.id&&d.products.some(p=>p.id===x.id)&&positive(x.qty))&&(r.type==='bundle'?nonnegative(r.offer)&&r.offer<=p.price:d.categories.includes(r.category)&&positive(r.threshold)&&positive(r.amount));
  });
 }
-if(typeof module!=='undefined')module.exports={giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
+if(typeof module!=='undefined')module.exports={productCategories,inCategory,normalizeProducts,giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
 
 // Auto-added quantities never contribute to category gift spending thresholds.
 function resolveGiftCart(db,manual,declined=new Set()){
@@ -119,7 +119,7 @@ function inventoryCsv(data,ids,columns,labels,yes='Yes',no='No'){
  const chosen=new Set(ids),keys=columns.filter(k=>Object.prototype.hasOwnProperty.call(labels,k));
  const cell=(value,text=false)=>{let s=String(value??'');if(text&&/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
  const rows=[keys.map(k=>cell(labels[k],true)).join(',')];
- for(const p of sortProductItems(data.products).filter(p=>chosen.has(p.id)))rows.push(keys.map(k=>{const v=k==='current'?stock(data,p):k==='sold'?sold(data,p.id):k==='sellDisplay'?(sellsDisplay(p)?yes:no):p[k];return cell(v,['sku','name','category','sellDisplay'].includes(k))}).join(','));
+ for(const p of sortProductItems(data.products).filter(p=>chosen.has(p.id)))rows.push(keys.map(k=>{const v=k==='current'?stock(data,p):k==='sold'?sold(data,p.id):k==='sellDisplay'?(sellsDisplay(p)?yes:no):k==='category'?productCategories(p).join('、'):p[k];return cell(v,['sku','name','category','sellDisplay'].includes(k))}).join(','));
  return '\uFEFF'+rows.join('\r\n')+'\r\n';
 }
 
@@ -135,4 +135,8 @@ function clampQuantity(data,id,value){const p=data.products.find(p=>p.id===id);i
 
 function syncTransactionSkus(data){const codes=new Map(data.products.map(p=>[p.id,p.sku]));for(const t of data.transactions)for(const i of t.items)if(codes.has(i.id))i.sku=codes.get(i.id)}
 
-function giftAllowance(db,manual,r){const sum=db.products.filter(p=>p.category===r.category).reduce((s,p)=>s+p.price*(manual[p.id]||0),0);return Math.min(Math.floor(sum/r.threshold),r.discountLimit??Infinity)}
+function giftAllowance(db,manual,r){const sum=db.products.filter(p=>inCategory(p,r.category)).reduce((s,p)=>s+p.price*(manual[p.id]||0),0);return Math.min(Math.floor(sum/r.threshold),r.discountLimit??Infinity)}
+
+function productCategories(p){return Array.isArray(p.categories)?p.categories:[p.category]}
+function inCategory(p,name){return productCategories(p).includes(name)}
+function normalizeProducts(data){for(const p of data.products){p.categories=productCategories(p);delete p.printed}return data}

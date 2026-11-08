@@ -11,7 +11,7 @@ assert.equal(L.removeEmptyCategory(d,'保留').products[0].category,'無分類')
 for(const r of [{type:'category'},{type:'order_category'},{type:'nth_price',scope:'category'},{type:'nth_percent',scope:'category'}]){
  d.promotions=[{id:'r',category:'空分類',...r}];assert.equal(L.removeEmptyCategory(d,'空分類').promotions.length,0);
 }
-d.promotions=[];const cleaned=L.removeEmptyCategory(d,'空分類');assert.deepEqual(cleaned.categories,['保留']);assert.equal(cleaned.categoryIds['空分類'],undefined);assert.equal(d.categories.length,2);assert.deepEqual(cleaned.products,d.products);assert.throws(()=>L.removeEmptyCategory(d,'不存在'),/找不到/);
+d.promotions=[];const cleaned=L.removeEmptyCategory(d,'空分類');assert.deepEqual(cleaned.categories,['保留']);assert.equal(cleaned.categoryIds['空分類'],undefined);assert.equal(d.categories.length,2);assert.deepEqual(cleaned.products,d.products.map(p=>({...p,categories:[p.category]})));assert.throws(()=>L.removeEmptyCategory(d,'不存在'),/找不到/);
 const gift={...p,id:'g',sku:'02',initial:0,sellDisplay:false};d.products.push(gift);d.promotions=[{id:'r',type:'category',productId:'g',category:'保留',threshold:100,amount:100,minQty:1,requires:[]}];
 assert.equal(L.resolveGiftCart(d,{p:1}).cart.g,undefined);assert.equal(L.resolveGiftCart(d,{p:1}).messages.length,1);gift.sellDisplay=true;assert.equal(L.resolveGiftCart(d,{p:1}).cart.g,1);
 // Verify stock toggles trim an existing cart and do not alter transaction history.
