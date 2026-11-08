@@ -38,6 +38,10 @@
 
 空白首頁也可按「試用範例商品」了解介面。範例資料僅供試用，正式使用前請確認商品與庫存。
 
+### 匯入完整範例
+
+可使用[範例 JSON](https://raw.githubusercontent.com/wade990047/booth_checkout/master/data/examples/booth-example.json)體驗 6 種優惠，詳細商品組合與預期金額見[範例說明](data/examples/README.md)。匯入會取代目前資料，請先備份。
+
 ### 每日操作
 
 | 時機 | 建議操作 |

@@ -1,0 +1,6 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm'),L=require('../../shared/js/pricing.js');
+const d=JSON.parse(fs.readFileSync('data/examples/booth-example.json','utf8'));
+const ctx={...L,categorySku:(d,c,b)=>(d.categoryIds?.[c]||'')+b};vm.createContext(ctx);vm.runInContext(fs.readFileSync('shared/js/format.js','utf8'),ctx);vm.runInContext(fs.readFileSync('features/backup/backup.js','utf8'),ctx);assert.equal(ctx.validateData(d),true);assert.equal(d.products.length,10);assert.equal(d.transactions.length,0);
+const check=(items,total,gift=0,code='')=>{const manual=Object.fromEntries(Object.entries(items).map(([k,v])=>['sample-'+k,v])),resolved=L.resolveGiftCart(d,manual),t=L.priceCart(d,resolved.cart,code,manual);assert.equal(t.total,total);assert.equal(resolved.auto['sample-gift']||0,gift);return t};
+check({'bundle-a':2,'bundle-b':2,'bundle-c':1},260);check({'bundle-a':2,'bundle-b':4,'bundle-c':2},320);check({'nth-a':2,'nth-b':2},360);check({'rate-a':2,'rate-b':2},444);check({spend:2},500,1);check({spend:6},1500,2);check({order:2},370);check({spend:20},4500,2);check({'nth-a':2,'nth-b':2},324,0,'DEMO10');check({'nth-a':2,'nth-b':2},310,0,'DEMO50');d.promotions.find(r=>r.id==='sample-gift').discountLimit=null;check({spend:6},1500,3);
+console.log('PASS: sample JSON import validation and all documented checkout examples');
