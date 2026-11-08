@@ -5,12 +5,15 @@
 小攤日常是以 HTML、CSS、JavaScript 製作的攤位收銀工具，提供商品選購、庫存總覽、交易紀錄、優惠活動與頁面設計五個功能頁面。金額以新臺幣（NT$）計算。
 
 - **正式網站：** https://wade990047.github.io/booth_checkout/
+- **範例資料：** [data/examples/](data/examples/)（[JSON 檔案](data/examples/booth-example.json) · [範例說明](data/examples/README.md)）
 - **適用方式：** 單一裝置、單一瀏覽器進行收銀。
 - **資料保存：** 商品、圖片、庫存、交易、優惠與設計儲存在目前瀏覽器。
 
 > 「結帳」會記錄交易與更新庫存，沒有串接刷卡、電子支付、發票或實際收款服務。請自行完成收款，再按結帳。
 
 ## 目錄
+
+- [範例資料位置與匯入](#匯入完整範例)
 
 1. [第一次使用與每日流程](#第一次使用與每日流程)
 2. [商品選購](#商品選購)
@@ -40,7 +43,14 @@
 
 ### 匯入完整範例
 
-可使用[範例 JSON](https://raw.githubusercontent.com/wade990047/booth_checkout/master/data/examples/booth-example.json)體驗 6 種優惠，詳細商品組合與預期金額見[範例說明](data/examples/README.md)。匯入會取代目前資料，請先備份。
+範例位於儲存庫的 **[data/examples/](data/examples/)** 資料夾：
+
+| 檔案位置 | 用途 |
+| --- | --- |
+| [data/examples/booth-example.json](data/examples/booth-example.json) | 可直接匯入的範例，含 10 件商品、6 種優惠活動、2 組優惠碼與商品圖片。 |
+| [data/examples/README.md](data/examples/README.md) | 各優惠的測試商品組合與預期結帳金額。 |
+
+取得[範例 JSON](https://raw.githubusercontent.com/wade990047/booth_checkout/master/data/examples/booth-example.json)後，在網站選「匯入備份」並選擇該檔案即可使用。**匯入會取代目前資料，請先備份。**
 
 ### 每日操作
 
