@@ -12,7 +12,7 @@ for(const language of ['en','ja']){
 }
 assert.equal(ctx.designSettings({language:'xx'}).language,'zh-Hant');
 vm.runInContext("for(const key of Object.keys(uiDictionary)){if(/[\\u3400-\\u9fff]/.test(ui(key,'en')))throw Error('Untranslated: '+key)}",ctx);
-for(const file of ['index.html',...['shop','inventory','history','promotions','design'].map(p=>'pages/'+p+'/index.html')]){
+for(const file of ['index.html',...['shop','inventory','categories','history','promotions','design'].map(p=>'pages/'+p+'/index.html')]){
  const html=fs.readFileSync(file,'utf8');assert(html.includes('shared/js/i18n.js'));assert(html.indexOf('shared/js/i18n.js')<html.indexOf('shared/js/bootstrap.js'));
 }
 console.log('PASS: language fallback, all English messages, protected user content, blank/custom design fields, default label migration and all page entries');

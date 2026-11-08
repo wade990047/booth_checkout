@@ -1791,6 +1791,128 @@ Object.assign(uiDictionary,{
     "現在庫を0にして取引履歴を保持します。展示品販売が有効なら1点追加販売できます。過去の取引を削除すると在庫が戻ります。"
   ]
 });
+Object.assign(uiDictionary,{
+  "分類管理": [
+    "Category management",
+    "カテゴリ管理"
+  ],
+  "分類管理選單": [
+    "Category management menu",
+    "カテゴリ管理メニュー"
+  ],
+  "管理分類與商品歸屬。": [
+    "Manage categories and product membership.",
+    "カテゴリと商品の所属を管理します。"
+  ],
+  "請輸入有效分類名稱與編號": [
+    "Enter a valid category name and prefix.",
+    "有効なカテゴリ名と接頭辞を入力してください。"
+  ],
+  "分類名稱已存在": [
+    "Category name already exists.",
+    "カテゴリ名が既に存在します。"
+  ],
+  "請選擇分類操作": [
+    "Select a category operation.",
+    "カテゴリ操作を選択してください。"
+  ],
+  "請先選擇來源分類": [
+    "Select the source category first.",
+    "移動元のカテゴリを選択してください。"
+  ],
+  "請先選擇目標分類": [
+    "Select the target category first.",
+    "移動先のカテゴリを選択してください。"
+  ],
+  "來源與目標分類不能相同": [
+    "Source and target must differ.",
+    "移動元と移動先は別のカテゴリにしてください。"
+  ],
+  "所選商品不屬於來源分類": [
+    "A selected product is not in the source category.",
+    "選択商品が移動元のカテゴリに属していません。"
+  ],
+  "分類 ID（選填）": [
+    "Category ID (optional)",
+    "カテゴリID（任意）"
+  ],
+  "全選分類": [
+    "Select all categories",
+    "すべてのカテゴリを選択"
+  ],
+  "刪除所選分類": [
+    "Delete selected categories",
+    "選択カテゴリを削除"
+  ],
+  "查看商品": [
+    "View products",
+    "商品を表示"
+  ],
+  "分類內商品": [
+    "Products in category",
+    "カテゴリ内の商品"
+  ],
+  "來源分類": [
+    "Source category",
+    "移動元カテゴリ"
+  ],
+  "目標分類": [
+    "Target category",
+    "移動先カテゴリ"
+  ],
+  "選擇目標分類": [
+    "Select target category",
+    "移動先カテゴリを選択"
+  ],
+  "分類操作": [
+    "Category operation",
+    "カテゴリ操作"
+  ],
+  "加入目標分類": [
+    "Add to target category",
+    "移動先カテゴリに追加"
+  ],
+  "移動至目標分類": [
+    "Move to target category",
+    "移動先カテゴリへ移動"
+  ],
+  "移出來源分類": [
+    "Remove from source category",
+    "移動元カテゴリから除外"
+  ],
+  "改為繼承目標分類 ID": [
+    "Use target category prefix",
+    "移動先のカテゴリIDを継承"
+  ],
+  "套用至所選商品": [
+    "Apply to selected products",
+    "選択商品に適用"
+  ],
+  "加入會保留原分類；移動僅取代來源分類，保留其他分類。移出最後一個分類時改為無分類。編號繼承變更會同步更新歷史交易；編號重複時整批不變更。": [
+    "Adding preserves existing categories; moving replaces only the source. Removing the last category assigns Uncategorized. Prefix changes update historical codes; duplicate codes cancel the entire batch.",
+    "追加は既存の所属を保持し、移動は移動元のみを置き換えます。最後の所属を削除すると未分類になります。接頭辞の変更は過去の取引にも反映し、番号が重複した場合は一括変更を中止します。"
+  ],
+  "分類資料已更新": [
+    "Category data updated",
+    "カテゴリ情報を更新しました"
+  ],
+  "刪除所選分類？": [
+    "Delete selected categories?",
+    "選択カテゴリを削除しますか？"
+  ],
+  "商品保留其他分類，必要時改為無分類；相關分類優惠將移除，交易保留。": [
+    "Other memberships remain, or products become Uncategorized. Related category promotions are removed; transactions remain.",
+    "他の所属は保持し、必要に応じて未分類になります。関連するカテゴリ特典は削除し、取引は保持します。"
+  ],
+  "套用分類變更？": [
+    "Apply category changes?",
+    "カテゴリ変更を適用しますか？"
+  ],
+  "所選商品：": [
+    "Selected products: ",
+    "選択商品："
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
