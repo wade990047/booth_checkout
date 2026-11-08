@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm');
+const handlers={},timers=new Map();let seq=0,updates=0;
+const root={addEventListener:(type,fn)=>handlers[type]=fn};const ctx={setTimeout:fn=>{timers.set(++seq,fn);return seq},clearTimeout:id=>timers.delete(id),Event:class{constructor(type,options){this.type=type;Object.assign(this,options)}}};vm.createContext(ctx);vm.runInContext(fs.readFileSync('shared/js/dialogs.js','utf8'),ctx);ctx.installCompositionGuards(root);
+function fire(type,target,extra={}){const e={target,key:'',stopImmediatePropagation(){this.stopped=true},preventDefault(){this.prevented=true},...extra};handlers[type]?.(e);if(type==='input'&&!e.stopped)updates++;return e}
+const input={isConnected:true,dispatchEvent:e=>fire(e.type,input)},flush=()=>{for(const [id,fn] of [...timers]){timers.delete(id);fn()}};
+fire('compositionstart',input);assert.ok(fire('input',input,{isComposing:true}).stopped);assert.ok(fire('input',input).stopped);assert.equal(updates,0);assert.ok(fire('keydown',input,{key:'Enter',isComposing:true}).stopped);
+fire('compositionend',input);fire('input',input);flush();assert.equal(updates,1,'native final input updates exactly once');
+fire('compositionstart',input);fire('compositionend',input);flush();assert.equal(updates,2,'fallback handles missing final input');fire('input',input);assert.equal(updates,3,'normal typing updates immediately');assert.ok(!fire('keydown',input,{key:'Enter'}).stopped);assert.ok(fire('keydown',input,{key:'Enter',keyCode:229}).stopped);
+fire('compositionstart',input);fire('compositionend',input);input.isConnected=false;flush();assert.equal(updates,3,'never refresh detached editor');input.isConnected=true;
+let submitBlock;const form={addEventListener:(type,fn)=>submitBlock=fn,removeEventListener:()=>submitBlock=null};input.form=form;fire('compositionstart',input);assert.ok(fire('submit',form).prevented);fire('keydown',input,{key:'Enter'});assert.ok(submitBlock);fire('compositionend',input);const e={preventDefault(){this.prevented=true},stopImmediatePropagation(){}};submitBlock(e);assert.ok(e.prevented);flush();assert.equal(submitBlock,null);
+console.log('PASS: IME pre-edit isolation, final input/fallback, normal typing, detached inputs and confirmation Enter/submit guards');

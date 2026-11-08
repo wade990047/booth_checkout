@@ -1,6 +1,7 @@
 // 所有功能載入後才初始化，可直接開啟 HTML，無須建置。
 try{db=JSON.parse(localStorage.getItem(KEY))||fresh()}catch{db=fresh()}
 normalizeProducts(db);
+installCompositionGuards();
 const allowedPages=['shop','inventory','categories','history','promotions','design'];
 const initialPage=document.body.dataset.initialPage;
 page=allowedPages.includes(initialPage)?initialPage:'shop';
