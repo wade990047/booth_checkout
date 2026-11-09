@@ -2,6 +2,7 @@
 try{db=JSON.parse(localStorage.getItem(KEY))||fresh()}catch{db=fresh()}
 normalizeProducts(db);
 installCompositionGuards();
+document.addEventListener('focus',e=>{if(e.target.matches?.('input,textarea'))disableInputHistory(e.target)},true);
 const allowedPages=['shop','inventory','categories','history','promotions','design'];
 const initialPage=document.body.dataset.initialPage;
 page=allowedPages.includes(initialPage)?initialPage:'shop';

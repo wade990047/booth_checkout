@@ -2,7 +2,7 @@
 
 function toast(t){$('#toast').textContent=t;$('#toast').style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>$('#toast').style.display='none',3500)}
 
-function openModal(html){$('#modal').innerHTML=html;if(!$('#modal').open)$('#modal').showModal()}
+function openModal(html){$('#modal').innerHTML=html;disableInputHistory($('#modal'));if(!$('#modal').open)$('#modal').showModal()}
 
 function closeModal(){$('#modal').close()}
 
@@ -29,4 +29,10 @@ function installCompositionGuards(root=document){
   }
  },true);
  root.addEventListener('submit',e=>{if([...composing].some(target=>target.form===e.target)){e.preventDefault();e.stopImmediatePropagation()}},true);
+}
+
+// Disable browser form-history suggestions without changing values or IME behavior.
+function disableInputHistory(root=document){
+ if(root.matches?.('form,input,textarea'))root.setAttribute('autocomplete','off');
+ root.querySelectorAll('form,input,textarea').forEach(field=>field.setAttribute('autocomplete','off'));
 }
