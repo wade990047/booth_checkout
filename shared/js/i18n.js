@@ -1913,6 +1913,48 @@ Object.assign(uiDictionary,{
     "選択商品："
   ]
 });
+Object.assign(uiDictionary,{
+  "編輯備註": [
+    "Edit note",
+    "備考を編集"
+  ],
+  "訂單備註": [
+    "Order note",
+    "注文の備考"
+  ],
+  "尚未填寫備註": [
+    "No note yet",
+    "備考はまだありません"
+  ],
+  "備註最多 2000 字": [
+    "Notes can contain up to 2000 characters.",
+    "備考は2000文字以内で入力してください。"
+  ],
+  "找不到此交易紀錄": [
+    "Transaction not found.",
+    "取引履歴が見つかりません。"
+  ],
+  "編輯訂單備註 #": [
+    "Edit order note #",
+    "注文の備考を編集 #"
+  ],
+  "可填寫付款方式、取貨安排或其他事項；可留白。": [
+    "Enter payment method, pickup arrangements or other details; optional.",
+    "支払方法、受取予定などを入力できます。空欄でも構いません。"
+  ],
+  "最多 2000 字，儲存後會隨備份保留。": [
+    "Up to 2000 characters. Saved notes are included in backups.",
+    "最大2000文字。保存した備考はバックアップにも含まれます。"
+  ],
+  "儲存備註": [
+    "Save note",
+    "備考を保存"
+  ],
+  "訂單備註已儲存": [
+    "Order note saved",
+    "注文の備考を保存しました"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
