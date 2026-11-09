@@ -1,0 +1,8 @@
+global.structuredClone ??= value=>require('node:v8').deserialize(require('node:v8').serialize(value));
+const assert=require('node:assert/strict'),fs=require('fs'),vm=require('vm'),L=require('../../shared/js/pricing.js');
+const values={name:'無分類商品',sku:'1',category:'',price:'100',initial:'5',offer:'',minQty:'1',discountLimit:'',offerName:''};
+const ctx={...L,structuredClone,editId:null,editingImage:'',db:{version:1,products:[],categories:[],categoryIds:{},transactions:[],promotions:[],coupons:[]},FormData:class{get(k){return values[k]??''}getAll(){return []}},$:()=>({value:''}),document:{querySelectorAll:()=>[]},uid:()=> 'p1',ui:s=>s,manualCart:{},closeModal:()=>{},render:()=>{},toast:s=>{throw Error(s)}};
+ctx.persist=next=>{ctx.db=next;return true};ctx.toast=s=>{assert.equal(s,'商品已儲存')};vm.createContext(ctx);for(const f of ['shared/js/format.js','features/products/product-editor.js','features/backup/backup.js'])vm.runInContext(fs.readFileSync(f,'utf8'),ctx);ctx.saveProduct();const p=ctx.db.products[0];assert.equal(p.category,'');assert.equal(p.categories.length,0);assert.equal(p.sku,'1');assert.equal(ctx.validateData(ctx.db),true);assert.equal(L.priceCart(ctx.db,{p1:2}).total,200);assert.equal(L.nextNumericSku(ctx.db,''),'2');assert.equal(ctx.validateData(JSON.parse(JSON.stringify(ctx.db))),true);
+ctx.db.categories=['其他'];const next=L.removeEmptyCategory(ctx.db,'其他');assert.equal(next.products[0].category,'');assert.equal(next.products[0].categories.length,0);
+const bad=structuredClone(ctx.db);bad.products[0].categories=['其他'];assert.equal(ctx.validateData(bad),false);
+console.log('PASS: create without categories, raw SKU, checkout, numeric sequence, backup roundtrip and unrelated category deletion');

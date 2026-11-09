@@ -13,7 +13,7 @@ function removeEmptyCategory(db,name){
  const reason=categoryRemovalReason(db,name);if(reason)throw Error(reason);
  const next=structuredClone(db);next.categories=next.categories.filter(c=>c!==name);
  if(next.categoryIds)delete next.categoryIds[name];
- for(const p of next.products){const groups=productCategories(p).filter(c=>c!==name);p.categories=groups.length?groups:['無分類'];if(p.category===name){const oldPrefix=db.categoryIds?.[name]||'';const base=p.baseSku??(p.sku.startsWith(oldPrefix)?p.sku.slice(oldPrefix.length):p.sku);p.category=p.categories[0];p.baseSku=p.category==='無分類'?p.sku:base;p.sku=(next.categoryIds?.[p.category]||'')+p.baseSku}}
+ for(const p of next.products){if(!inCategory(p,name))continue;const groups=productCategories(p).filter(c=>c!==name);p.categories=groups.length?groups:['無分類'];if(p.category===name){const oldPrefix=db.categoryIds?.[name]||'';const base=p.baseSku??(p.sku.startsWith(oldPrefix)?p.sku.slice(oldPrefix.length):p.sku);p.category=p.categories[0];p.baseSku=p.category==='無分類'?p.sku:base;p.sku=(next.categoryIds?.[p.category]||'')+p.baseSku}}
  if(next.products.some(p=>inCategory(p,'無分類'))&&!next.categories.includes('無分類'))next.categories.push('無分類');
  if(new Set(next.products.map(p=>p.sku.toLowerCase())).size!==next.products.length)throw Error('分類移除後商品編號重複，請先調整商品編號');
  syncTransactionSkus(next);
@@ -137,6 +137,6 @@ function syncTransactionSkus(data){const codes=new Map(data.products.map(p=>[p.i
 
 function giftAllowance(db,manual,r){const sum=db.products.filter(p=>inCategory(p,r.category)).reduce((s,p)=>s+p.price*(manual[p.id]||0),0);return Math.min(Math.floor(sum/r.threshold),r.discountLimit??Infinity)}
 
-function productCategories(p){return Array.isArray(p.categories)?p.categories:[p.category]}
+function productCategories(p){return Array.isArray(p.categories)?p.categories:p.category?[p.category]:[]}
 function inCategory(p,name){return productCategories(p).includes(name)}
 function normalizeProducts(data){for(const p of data.products){p.categories=productCategories(p);delete p.printed}return data}

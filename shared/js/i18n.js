@@ -1955,6 +1955,20 @@ Object.assign(uiDictionary,{
     "注文の備考を保存しました"
   ]
 });
+Object.assign(uiDictionary,{
+  "所屬分類（可複選，可不選）": [
+    "Categories (optional, multiple selection)",
+    "所属カテゴリ（任意、複数選択可）"
+  ],
+  "不套用分類 ID": [
+    "No category prefix",
+    "カテゴリIDを適用しない"
+  ],
+  "無分類": [
+    "Uncategorized",
+    "未分類"
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
