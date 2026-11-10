@@ -2003,6 +2003,7 @@ Object.assign(uiDictionary,{
     "お釣り："
   ]
 });
+Object.assign(uiDictionary,{'結帳資訊':['Payment details','お会計']});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
