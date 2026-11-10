@@ -76,7 +76,7 @@ function validPromotions(d){
   return positive(r.minQty)&&(r.discountLimit==null||positive(r.discountLimit))&&Array.isArray(r.requires)&&r.requires.every(x=>x.id!==p.id&&d.products.some(p=>p.id===x.id)&&positive(x.qty))&&(r.type==='bundle'?nonnegative(r.offer)&&r.offer<=p.price:d.categories.includes(r.category)&&positive(r.threshold)&&positive(r.amount));
  });
 }
-if(typeof module!=='undefined')module.exports={productCategories,inCategory,normalizeProducts,giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
+if(typeof module!=='undefined')module.exports={paymentAmounts,productCategories,inCategory,normalizeProducts,giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
 
 // Auto-added quantities never contribute to category gift spending thresholds.
 function resolveGiftCart(db,manual,declined=new Set()){
@@ -140,3 +140,10 @@ function giftAllowance(db,manual,r){const sum=db.products.filter(p=>inCategory(p
 function productCategories(p){return Array.isArray(p.categories)?p.categories:p.category?[p.category]:[]}
 function inCategory(p,name){return productCategories(p).includes(name)}
 function normalizeProducts(data){for(const p of data.products){p.categories=productCategories(p);delete p.printed}return data}
+
+function paymentAmounts(total,input=''){
+ const received=String(input).trim()===''?total:Number(input);
+ if(!Number.isSafeInteger(received)||received<0)throw Error('實收金額請填 0 或正整數');
+ if(received<total)throw Error('實收金額不足，請確認收款金額');
+ return {received,change:received-total};
+}

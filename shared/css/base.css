@@ -15,3 +15,5 @@ html:not([lang="zh-Hant"]) .offer-detail summary small{white-space:normal}
 #productCategories{display:flex;flex-wrap:wrap;gap:8px 16px}#productCategories label{display:flex;align-items:center;gap:6px}#productCategories input{width:auto}
 
 .transaction-note{margin-top:14px;border-top:1px solid var(--line);padding-top:12px;font-size:13px}.note-text{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:6px}#transactionNote{width:100%;box-sizing:border-box;font:inherit;line-height:1.6;resize:vertical;padding:12px;border:1px solid var(--line);border-radius:9px}
+
+.payment-field{margin:12px 0}.transaction-payment{display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:14px;font-size:14px}#paymentError:empty{display:none}

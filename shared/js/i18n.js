@@ -1969,6 +1969,40 @@ Object.assign(uiDictionary,{
     "未分類"
   ]
 });
+Object.assign(uiDictionary,{
+  "實收金額（選填）": [
+    "Amount received (optional)",
+    "受取金額（任意）"
+  ],
+  "未填寫時以應收金額記錄": [
+    "Blank uses the amount due",
+    "空欄の場合は請求額を記録"
+  ],
+  "應找金額": [
+    "Change due",
+    "お釣り"
+  ],
+  "實收金額請填 0 或正整數": [
+    "Enter a nonnegative whole amount received.",
+    "受取金額は0以上の整数で入力してください。"
+  ],
+  "實收金額不足，請確認收款金額": [
+    "Amount received is insufficient. Please check payment.",
+    "受取金額が不足しています。金額を確認してください。"
+  ],
+  "應收：": [
+    "Due: ",
+    "請求額："
+  ],
+  "實收：": [
+    "Received: ",
+    "受取額："
+  ],
+  "找零：": [
+    "Change: ",
+    "お釣り："
+  ]
+});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
