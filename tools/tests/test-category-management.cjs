@@ -10,3 +10,10 @@ assert.throws(()=>ctx.manageProductCategories(d,['p'],'move','','C'),/來源/);a
 next=ctx.deleteManagedCategories(d,['A','B']);assert.equal(next.products[0].category,'無分類');assert.equal(next.products.length,1);assert.equal(next.promotions.length,0);assert.equal(next.transactions.length,1);assert.equal(JSON.stringify(d),before);assert.throws(()=>ctx.deleteManagedCategories(next,['無分類']),/不能移除/);
 for(const entry of ['index.html',...['shop','inventory','categories','history','promotions','design'].map(p=>'pages/'+p+'/index.html')])assert.ok(fs.readFileSync(entry,'utf8').includes('pages/categories/categories.js'));
 console.log('PASS: category create/bulk delete, add/remove/move memberships, prefix/history sync, stock preservation, collision atomicity and all page entry scripts');
+next=ctx.updateManagedCategory(d,'A','New','N-',false);
+assert.equal(next.products[0].sku,'N-1');assert.equal(next.transactions[0].items[0].sku,'N-1');assert.equal(next.products[0].categories.join(','),'New,B');assert.equal(next.promotions[0].category,'New');assert.equal(next.hiddenCategories.join(','),'New');assert.equal(next.categoryIds.A,undefined);assert.equal(JSON.stringify(d),before);
+next=ctx.updateManagedCategory(next,'New','New','',true);assert.equal(next.products[0].sku,'1');assert.equal(next.hiddenCategories.length,0);
+assert.throws(()=>ctx.updateManagedCategory(d,'A','B',''),/已存在/);
+assert.throws(()=>ctx.updateManagedCategory(clash,'A','A','C-'),/重複/);
+next=ctx.addManagedCategory(d,'Hidden','',false);assert.ok(next.hiddenCategories.includes('Hidden'));next=ctx.deleteManagedCategories(next,['Hidden']);assert.equal(next.hiddenCategories.length,0);
+console.log('PASS: category rename, visibility, prefix/history sync and atomic collision protection');

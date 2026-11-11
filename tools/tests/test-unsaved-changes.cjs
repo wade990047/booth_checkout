@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+global.structuredClone??=x=>JSON.parse(JSON.stringify(x));
+let form={brand:'saved'},modal=false,renders=0,canSave=true;
+const nodes=Object.fromEntries(['leaveStay','leaveDiscard','leaveSave','leaveSaveError'].map(k=>[k,{}]));
+const ctx={page:'design',db:{design:{brand:'saved'}},designDraft:null,categoryDrafts:new Map(),categoryCreateDraft:null,structuredClone,readDesignForm:()=>({...form}),designSettings:x=>x,captureCategoryDrafts:()=>{},$:s=>s==='#designForm'?{}:nodes[s.slice(1)],ui:x=>x,uiTemplate:(s,...v)=>s.reduce((a,b,i)=>a+b+(v[i]??''),''),openModal:()=>{modal=true},closeModal:()=>{modal=false}};
+ctx.persist=n=>{if(!canSave)return false;ctx.db=n;return true};ctx.saveCategoryDrafts=()=>canSave;
+vm.createContext(ctx);vm.runInContext(fs.readFileSync('shared/js/shell.js','utf8'),ctx);ctx.render=()=>renders++;
+assert.equal(ctx.hasUnsavedPageChanges(),false);
+form.brand='edited';assert.equal(ctx.hasUnsavedPageChanges(),true);ctx.requestPageChange('shop');assert.equal(modal,true);assert.equal(ctx.page,'design');nodes.leaveStay.onclick();assert.equal(ctx.page,'design');assert.equal(form.brand,'edited');
+ctx.requestPageChange('shop');canSave=false;nodes.leaveSave.onclick();assert.equal(ctx.page,'design');assert.equal(modal,true);assert.equal(ctx.db.design.brand,'saved');canSave=true;nodes.leaveSave.onclick();assert.equal(ctx.page,'shop');assert.equal(ctx.db.design.brand,'edited');assert.equal(modal,false);
+ctx.page='design';ctx.requestPageChange('categories');assert.equal(modal,false);assert.equal(ctx.page,'categories');
+ctx.categoryDrafts.set('A',{name:'B'});ctx.requestPageChange('shop');assert.equal(modal,true);nodes.leaveDiscard.onclick();assert.equal(ctx.categoryDrafts.size,0);assert.equal(ctx.page,'shop');
+ctx.page='categories';ctx.categoryCreateDraft={name:'New'};ctx.requestPageChange('shop');assert.equal(modal,true);nodes.leaveStay.onclick();assert.equal(ctx.categoryCreateDraft.name,'New');
+form={brand:'edited'};ctx.page='design';assert.equal(ctx.hasUnsavedPageChanges(),false);
+console.log('PASS: unsaved navigation save/discard/stay, failure stays, saved/reverted clean, category row and creation drafts');

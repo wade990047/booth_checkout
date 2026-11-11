@@ -2004,6 +2004,8 @@ Object.assign(uiDictionary,{
   ]
 });
 Object.assign(uiDictionary,{'結帳成功，金額':['Checkout complete. Total:','会計完了。合計：']});
+Object.assign(uiDictionary,{'顯示於商品選購上方':['Show in shop tabs','商品選択の上部に表示'],'分類名稱':['Category name','カテゴリ名'],'可留白':['Optional','任意'],'無分類為系統分類，不能更名':['The system category cannot be renamed.','システムカテゴリの名前は変更できません。']});
+Object.assign(uiDictionary,{'尚未儲存的變更':['Unsaved changes','未保存の変更'],'離開此頁面前，要儲存目前的修改嗎？':['Save your changes before leaving this page?','このページを離れる前に変更を保存しますか？'],'繼續編輯':['Keep editing','編集を続ける'],'不儲存並離開':['Leave without saving','保存せずに移動'],'儲存並離開':['Save and leave','保存して移動'],'尚未儲存，請修正資料後再試。':['Not saved. Please correct the data and try again.','未保存です。内容を修正して再試行してください。']});
 const supportedLanguages=['zh-Hant','en','ja'];
 let designDraft=null;
 function normalizeLanguage(value){return supportedLanguages.includes(value)?value:'zh-Hant'}
