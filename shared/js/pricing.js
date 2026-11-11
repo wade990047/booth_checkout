@@ -23,14 +23,14 @@ function removeEmptyCategory(db,name){
 function allPromotions(db){return [...db.products.filter(p=>p.offer!=null).map(p=>({id:'legacy:'+p.id,productId:p.id,name:p.offerName||p.name+'優惠',type:'bundle',offer:p.offer,minQty:p.minQty||1,discountLimit:p.discountLimit??null,requires:p.requires||[]})),...(db.promotions||[]).map(r=>r.type==='category'?{...r,minQty:1,requires:[]}:r)]}
 function isOrderRule(r){return r.type==='order_all'||r.type==='order_category'}
 function isNthRule(r){return r.type==='nth_price'||r.type==='nth_percent'}
-function scopeProducts(db,r){return db.products.filter(p=>r.type==='order_all'||(r.type==='order_category'||r.scope==='category'?inCategory(p,r.category):(r.productIds||[]).includes(p.id)))}
+function scopeProducts(db,r){return db.products.filter(p=>!(isOrderRule(r)&&(r.excludedProductIds||[]).includes(p.id))&&(r.type==='order_all'||(r.type==='order_category'||r.scope==='category'?inCategory(p,r.category):(r.productIds||[]).includes(p.id))))}
 function relatedPromotion(db,r,p){if(isOrderRule(r)||isNthRule(r))return scopeProducts(db,r).some(x=>x.id===p.id);return r.productId===p.id||(r.requires||[]).some(x=>x.id===p.id)||(r.type==='category'&&inCategory(p,r.category))}
 function productHasDiscount(db,r,p){if(isOrderRule(r))return false;if(isNthRule(r))return relatedPromotion(db,r,p)&&(r.type==='nth_price'?r.offer<p.price:r.rate<10&&p.price>0);return r.productId===p.id&&(r.type==='category'?p.price>0:r.offer<p.price)}
 function promotionState(db,cart,r,pricedItems,qualificationCart=cart){
  if(isOrderRule(r)){
   const scope=scopeProducts(db,r),ids=new Set(scope.map(p=>p.id));const items=pricedItems||priceItems(db,cart,qualificationCart).items;
   const basis=items.filter(i=>ids.has(i.id)).reduce((s,i)=>s+i.total,0),eligible=basis>=r.threshold;
-  return {eligible,relevant:scope.some(p=>cart[p.id]>0),basis,saving:eligible?Math.min(basis,r.amount):0};
+  return {eligible,relevant:scope.some(p=>cart[p.id]>0),basis,saving:eligible?Math.min(basis,Math.floor(basis/r.threshold)*r.amount):0};
  }
  if(isNthRule(r)){
   const list=scopeProducts(db,r).filter(p=>cart[p.id]>0).sort((a,b)=>a.price-b.price||a.sku.localeCompare(b.sku,'zh-TW',{numeric:true})||a.id.localeCompare(b.id));
@@ -59,10 +59,12 @@ function priceCart(db,cart,code='',qualificationCart=cart){
  const {items,offers}=priceItems(db,cart,qualificationCart),original=items.reduce((s,i)=>s+i.original*i.qty,0),itemSubtotal=items.reduce((s,i)=>s+i.total,0);
  const order=allPromotions(db).filter(isOrderRule).map(r=>({r,...promotionState(db,cart,r,items)})).filter(x=>x.eligible&&x.saving>0).sort((a,b)=>b.saving-a.saving)[0];
  const orderDiscount=order?.saving||0,subtotal=itemSubtotal-orderDiscount;
- if(order)offers.push({id:order.r.id,name:order.r.name,saving:orderDiscount,scope:'order'});
+ if(order)offers.push({id:order.r.id,name:order.r.name,saving:orderDiscount,scope:'order',productIds:scopeProducts(db,order.r).map(p=>p.id)});
  const coupon=db.coupons.find(c=>c.code.toUpperCase()===code.trim().toUpperCase());
  const discount=coupon?Math.min(subtotal,coupon.type==='percent'?Math.round(subtotal*coupon.value/100):coupon.value):0;
- return {items:sortProductItems(items),offers,original,itemSubtotal,orderDiscount,subtotal,discount,total:Math.max(0,subtotal-discount),coupon};
+ const result={items:sortProductItems(items),offers,original,itemSubtotal,orderDiscount,subtotal,discount,total:Math.max(0,subtotal-discount),coupon};
+ result.items=allocateTransactionRevenue(result,db).map(i=>({...i,categories:[...productCategories(db.products.find(p=>p.id===i.id))]}));
+ return result;
 }
 function nextNumber(db){return Math.max(0,...db.transactions.map(t=>t.number))+1}
 function validPromotions(d){
@@ -70,14 +72,14 @@ function validPromotions(d){
  const ids=new Set(),positive=n=>Number.isSafeInteger(n)&&n>0,nonnegative=n=>Number.isSafeInteger(n)&&n>=0;
  return d.promotions.every(r=>{
   if(!r||typeof r.id!=='string'||r.id.startsWith('legacy:')||ids.has(r.id)||typeof r.name!=='string'||!r.name.trim())return false;ids.add(r.id);
-  if(isOrderRule(r))return positive(r.threshold)&&positive(r.amount)&&(r.type==='order_all'||d.categories.includes(r.category));
+  if(isOrderRule(r))return positive(r.threshold)&&positive(r.amount)&&(r.type==='order_all'||d.categories.includes(r.category))&&(r.excludedProductIds===undefined||Array.isArray(r.excludedProductIds)&&new Set(r.excludedProductIds).size===r.excludedProductIds.length&&r.excludedProductIds.every(id=>d.products.some(p=>p.id===id)));
   if(isNthRule(r))return positive(r.nth)&&r.nth>=2&&(r.scope==='category'?d.categories.includes(r.category):r.scope==='products'&&Array.isArray(r.productIds)&&r.productIds.length>0&&new Set(r.productIds).size===r.productIds.length&&r.productIds.every(id=>d.products.some(p=>p.id===id)))&&(r.type==='nth_price'?nonnegative(r.offer):typeof r.rate==='number'&&Number.isFinite(r.rate)&&r.rate>0&&r.rate<10);
   const p=d.products.find(p=>p.id===r.productId);if(!p||!['bundle','category'].includes(r.type))return false;
   if(r.type==='category')return d.categories.includes(r.category)&&positive(r.threshold)&&(r.discountLimit==null||positive(r.discountLimit));
   return positive(r.minQty)&&(r.discountLimit==null||positive(r.discountLimit))&&Array.isArray(r.requires)&&r.requires.every(x=>x.id!==p.id&&d.products.some(p=>p.id===x.id)&&positive(x.qty))&&(r.type==='bundle'?nonnegative(r.offer)&&r.offer<=p.price:d.categories.includes(r.category)&&positive(r.threshold)&&positive(r.amount));
  });
 }
-if(typeof module!=='undefined')module.exports={productCategories,inCategory,normalizeProducts,giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
+if(typeof module!=='undefined')module.exports={allocateTransactionRevenue,allocateDiscount,productCategories,inCategory,normalizeProducts,giftAllowance,syncTransactionSkus,nextNumericSku,reserveNumericSku,clampQuantity,sortProductItems,zeroInventory,bulkDisplaySetting,productDeletionReason,deleteSelectedProducts,inventoryCsv,sellsDisplay,availableStock,categoryRemovalReason,removeEmptyCategory,sold,stock,priceCart,priceItems,nextNumber,allPromotions,promotionState,validPromotions,isOrderRule,isNthRule,scopeProducts,relatedPromotion,productHasDiscount,resolveGiftCart};
 
 // Auto-added quantities never contribute to category gift spending thresholds.
 function resolveGiftCart(db,manual,declined=new Set()){
@@ -103,12 +105,13 @@ function productDeletionReason(data,id){
 }
 function deleteSelectedProducts(data,ids){
  const chosen=new Set(ids);for(const p of data.products)if(chosen.has(p.id)){const reason=productDeletionReason(data,p.id);if(reason)throw Error(reason)}
- const next=structuredClone(data);next.products=next.products.filter(p=>!chosen.has(p.id));
+ const next=structuredClone(data);next.products=next.products.filter(p=>!chosen.has(p.id));if(next.printCosts)for(const id of chosen)delete next.printCosts[id];
  const cleaned=allPromotions(data).map(r=>{
   if(chosen.has(r.productId))return null;
   const affected=data.products.some(p=>chosen.has(p.id)&&relatedPromotion(data,r,p));
   const rule={...r,requires:(r.requires||[]).filter(x=>!chosen.has(x.id))};
   if(r.productIds)rule.productIds=r.productIds.filter(id=>!chosen.has(id));
+  if(r.excludedProductIds)rule.excludedProductIds=r.excludedProductIds.filter(id=>!chosen.has(id));
   if(affected&&next.products.filter(p=>relatedPromotion(next,rule,p)).length<=1)return null;
   return rule;
  }).filter(Boolean);
@@ -141,3 +144,27 @@ function giftAllowance(db,manual,r){const sum=db.products.filter(p=>inCategory(p
 function productCategories(p){return Array.isArray(p.categories)?p.categories:p.category?[p.category]:[]}
 function inCategory(p,name){return productCategories(p).includes(name)}
 function normalizeProducts(data){for(const p of data.products){p.categories=productCategories(p);delete p.printed}return data}
+
+// Allocate whole currency units, giving rounding remainders to lower-priced items.
+function allocateDiscount(rows,amount){
+ const sum=rows.reduce((s,r)=>s+r.weight,0),out=new Map(rows.map(r=>[r.id,0]));
+ if(!sum||!amount)return out;
+ amount=Math.min(amount,sum);
+ for(const r of rows)out.set(r.id,Number(BigInt(amount)*BigInt(r.weight)/BigInt(sum)));
+ let rest=amount-[...out.values()].reduce((s,n)=>s+n,0);
+ const ordered=[...rows].sort((a,b)=>a.price-b.price||String(a.sku).localeCompare(String(b.sku),'zh-TW',{numeric:true}));
+ while(rest>0)for(const r of ordered){if(rest&&out.get(r.id)<r.weight){out.set(r.id,out.get(r.id)+1);rest--}}
+ return out;
+}
+function allocateTransactionRevenue(t,data){
+ if(t.items.every(i=>Number.isSafeInteger(i.revenue)&&i.revenue>=0)&&t.items.reduce((s,i)=>s+i.revenue,0)===t.total)return t.items.map(i=>({...i}));
+ const items=t.items.map(i=>({...i})),orderOffers=(t.offers||[]).filter(o=>o.scope==='order');
+ const itemTotal=items.reduce((s,i)=>s+i.total,0),reduction=Math.max(0,itemTotal-t.total);
+ const orderAmount=Math.min(reduction,t.orderDiscount??orderOffers.reduce((s,o)=>s+o.saving,0));
+ let ids=new Set(items.map(i=>i.id));
+ if(orderOffers.length){const o=orderOffers[0],rule=(data.promotions||[]).find(r=>r.id===o.id);ids=new Set(o.productIds|| (rule?scopeProducts(data,rule).map(p=>p.id):items.map(i=>i.id)))}
+ const order=allocateDiscount(items.filter(i=>ids.has(i.id)).map(i=>({id:i.id,sku:i.sku,price:i.original,weight:i.total})),orderAmount);
+ const actualOrder=[...order.values()].reduce((s,n)=>s+n,0);
+ const coupon=allocateDiscount(items.map(i=>({id:i.id,sku:i.sku,price:i.original,weight:i.total-(order.get(i.id)||0)})),reduction-actualOrder);
+ return items.map(i=>({...i,orderShare:order.get(i.id)||0,couponShare:coupon.get(i.id)||0,revenue:i.total-(order.get(i.id)||0)-(coupon.get(i.id)||0)}));
+}

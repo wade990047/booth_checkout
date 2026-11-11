@@ -1,0 +1,21 @@
+global.structuredClone??=v=>JSON.parse(JSON.stringify(v));
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),L=require('../../shared/js/pricing.js');
+const product=(id,price,category='A')=>({id,name:id,sku:id,price,initial:100,category,categories:[category],offer:null,requires:[],minQty:1,image:''});
+const db={version:1,categories:['A','B'],products:[product('A-1',250),product('A-2',150),product('A-3',100),product('B-1',60,'B')],transactions:[],coupons:[],promotions:[{id:'r',name:'Spend',type:'order_all',threshold:500,amount:100}]};
+let t=L.priceCart(db,{'A-1':1,'A-2':1,'A-3':1});assert.equal(t.total,400);assert.deepEqual(t.items.map(i=>i.orderShare),[50,30,20]);assert.deepEqual(t.items.map(i=>i.revenue),[200,120,80]);
+t=L.priceCart(db,{'A-1':6,'B-1':1});assert.equal(t.orderDiscount,300);assert.equal(t.total,1260);assert.deepEqual(t.items.map(i=>i.orderShare),[288,12]);
+db.promotions[0].excludedProductIds=['A-3'];t=L.priceCart(db,{'A-1':1,'A-2':1,'A-3':2});assert.equal(t.orderDiscount,0);
+t=L.priceCart(db,{'A-1':2,'A-3':2});assert.equal(t.orderDiscount,100);assert.equal(t.items[1].orderShare,0);assert.equal(t.items[1].revenue,200);
+db.promotions[0].type='order_category';db.promotions[0].category='A';t=L.priceCart(db,{'A-1':2,'B-1':10});assert.equal(t.orderDiscount,100);assert.equal(t.items[1].orderShare,0);
+db.coupons=[{code:'X',type:'fixed',value:51}];t=L.priceCart(db,{'A-1':2,'A-3':1,'B-1':1},'X');assert.equal(t.items.reduce((s,i)=>s+i.revenue,0),t.total);assert.equal(t.items.reduce((s,i)=>s+i.couponShare,0),51);
+const snapshot=structuredClone(t);db.promotions=[];db.products[0].price=999;assert.deepEqual(L.allocateTransactionRevenue(t,db),snapshot.items);
+const ctx={...L,ui:s=>s,money:String,esc:String,uiTemplate:(s,...v)=>s.reduce((a,b,i)=>a+b+(v[i]??''),''),categorySku:(d,c,b)=>(d.categoryIds?.[c]||'')+b};vm.createContext(ctx);for(const f of ['pages/revenue/revenue.js','shared/js/format.js','features/backup/backup.js'])vm.runInContext(fs.readFileSync(f,'utf8'),ctx);
+db.transactions=[{...t,id:'tx',number:1,date:new Date().toISOString()}];db.printCosts={'A-1':300,'B-1':100};let report=ctx.revenueReport(db);assert.equal(report.totals.revenue,t.total);assert.equal(report.totals.cost,400);assert.equal(report.totals.profit,t.total-400);assert.equal(report.totals.discount,t.original-t.total);
+assert.equal(ctx.revenueReport(db,'B-1').totals.cost,100);assert.equal(ctx.revenueReport(db,'','B').rows.length,1);assert.equal(ctx.validateData(db),true);
+const bad=structuredClone(db);bad.transactions[0].items[0].revenue++;assert.equal(ctx.validateData(bad),false);bad.printCosts={'A-1':-1};assert.equal(ctx.validateData(bad),false);
+assert.ok(ctx.revenueCsv(report).startsWith('\ufeff'));db.products[0].name='=SUM(1,2)';assert.ok(ctx.revenueCsv(ctx.revenueReport(db)).includes("'=SUM(1,2)"));
+for(let amount=0;amount<=500;amount++){const a=L.allocateDiscount([{id:'a',weight:250,price:250},{id:'b',weight:150,price:150},{id:'c',weight:100,price:100}],amount);assert.equal([...a.values()].reduce((s,n)=>s+n,0),amount);assert.ok(a.get('a')<=250&&a.get('b')<=150&&a.get('c')<=100)}
+const rem=L.allocateDiscount([{id:'a',weight:250,price:250},{id:'b',weight:150,price:150},{id:'c',weight:100,price:100}],1);assert.equal(rem.get('c'),1);
+const old={...t,items:t.items.map(({revenue,orderShare,couponShare,...i})=>i)};assert.equal(L.allocateTransactionRevenue(old,db).reduce((s,i)=>s+i.revenue,0),t.total);
+db.transactions=[];db.promotions=[{id:'r',name:'X',type:'order_all',threshold:500,amount:100,excludedProductIds:['A-3']}];const removed=L.deleteSelectedProducts(db,['A-3']);assert.deepEqual(removed.promotions[0].excludedProductIds,[]);assert.equal(L.validPromotions(removed),true);
+console.log('PASS: repeated thresholds, exclusions, proportional allocation, low-price remainders, snapshots, filters, batch cost, profit, CSV and backup validation');

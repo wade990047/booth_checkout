@@ -24,3 +24,12 @@ html:not([lang="zh-Hant"]) .offer-detail summary small{white-space:normal}
 .checkoutbtn{padding-top:8px}
 
 .category-name-input{width:160px}.category-id-input{width:135px}.category-visibility{display:flex;align-items:center;gap:8px;font-size:12px}.field .category-visibility input{width:auto}
+
+/* Stable navigation metrics regardless of active state. */
+.nav button{line-height:24px;font-weight:500;min-height:52px}
+.nav button.active{font-weight:500}
+.nav button>span{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;min-width:24px;line-height:24px;font-size:18px;font-weight:400;vertical-align:middle}
+html{scrollbar-gutter:stable}
+@media(max-width:800px){.nav button{min-height:42px}}
+
+.revenue-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.profit-positive{color:#208044}.profit-negative{color:#c13a35}.revenue-view input[data-print-cost]{width:90px;min-width:0;padding:8px}.revenue-view .print-cost-column{width:1%;white-space:nowrap}.print-cost-editor{display:flex;align-items:center;justify-content:flex-start;gap:6px}.print-cost-editor button{padding:8px 10px;font-size:12px;white-space:nowrap}.revenue-view .stat strong{overflow-wrap:anywhere}.rule-exclusions select{min-width:0;flex:1}@media(max-width:1000px){.revenue-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
