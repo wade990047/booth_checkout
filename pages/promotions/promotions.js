@@ -7,7 +7,7 @@ function promotionDescription(r,progress=false){
   if(progress)lines.push(uiTemplate`目前 ${money(s.basis)}，尚差 ${money(Math.max(0,r.threshold-s.basis))}`);
  }else if(isNthRule(r)){
   const state=promotionState(db,cart,r,undefined,manualCart);
-  lines=[r.scope==='category'?uiTemplate`適用「${esc(r.category)}」分類`:ui('適用商品：')+scopeProducts(db,r).map(p=>esc(p.name)).join('、'),uiTemplate`每滿 ${r.nth} 件，較低價商品優惠 1 件，可重複累計。`,r.type==='nth_price'?ui('每件優惠價 ')+money(r.offer):ui('打 ')+r.rate+ui(' 折')];
+  lines=[r.scope==='category'?uiTemplate`適用「${esc(r.category)}」分類`:ui('適用商品：')+sortProductItems(scopeProducts(db,r)).map(p=>esc(p.name)).join('、'),uiTemplate`每滿 ${r.nth} 件，較低價商品優惠 1 件，可重複累計。`,r.type==='nth_price'?ui('每件優惠價 ')+money(r.offer):ui('打 ')+r.rate+ui(' 折')];
   if(progress){lines.push(uiTemplate`目前 ${state.count} 件，可折扣 ${state.discountQty} 件`);for(const x of state.discounts)lines.push(uiTemplate`${esc(db.products.find(p=>p.id===x.productId)?.name)}：${x.discountQty} 件，優惠價 ${money(x.unit)}`)}
  }else if(r.type==='category'){
   const p=db.products.find(p=>p.id===r.productId);if(!p)return '';
@@ -16,7 +16,7 @@ function promotionDescription(r,progress=false){
   if(progress)lines.push(uiTemplate`目前金額 ${money(state.categoryTotal)}，可贈送 ${state.groups} 件`);
  }else{
   const p=db.products.find(p=>p.id===r.productId);if(!p)return '';
-  lines=[ui('每折扣 1 件，需同時滿足以下一組條件：'),...[{id:p.id,qty:r.minQty||1},...(r.requires||[])].map(x=>{const item=db.products.find(p=>p.id===x.id);return uiTemplate`${esc(item?.name)}（${esc(item?.sku)}）至少 ${x.qty} 件`}),uiTemplate`每件優惠價 ${money(r.offer)}；每筆最多 ${r.discountLimit??ui('全部符合')} 件`,ui('每件折扣各需一組條件數量；不足一組不折扣。')];
+  lines=[ui('每折扣 1 件，需同時滿足以下一組條件：'),...sortProductItems([{id:p.id,qty:r.minQty||1},...(r.requires||[])].map(x=>({...x,sku:db.products.find(p=>p.id===x.id)?.sku||''}))).map(x=>{const item=db.products.find(p=>p.id===x.id);return uiTemplate`${esc(item?.name)}（${esc(item?.sku)}）至少 ${x.qty} 件`}),uiTemplate`每件優惠價 ${money(r.offer)}；每筆最多 ${r.discountLimit??ui('全部符合')} 件`,ui('每件折扣各需一組條件數量；不足一組不折扣。')];
   if(progress){const state=promotionState(db,cart,r,undefined,manualCart);lines.push(uiTemplate`目前符合 ${state.groups} 組，可折扣 ${state.discountQty} 件`)}
  }
  return lines.map(x=>'<div>'+x+'</div>').join('');
@@ -25,11 +25,11 @@ function promotionHints(t){return allPromotions(db).filter(r=>promotionState(db,
 function promotionsHTML(){return uiTemplate`<section class="view"><div class="row"><h2>優惠碼</h2><button data-action="coupons" class="primary">新增／管理優惠碼</button></div><p class="sub">每筆使用一組，於商品與訂單優惠後折抵。</p>${db.coupons.map(c=>`<article class="transaction row"><strong>${esc(c.code)}</strong><span>${c.type==='percent'?ui('折抵 ')+c.value+'%':ui('折抵 ')+money(c.value)}</span></article>`).join('')||ui('<p class="sub">尚無優惠碼</p>')}<div class="row"><h2>優惠活動</h2><button data-action="newPromotion" class="primary">＋ 新增優惠活動</button></div><p class="sub">同商品活動擇總折抵最多的一項，再套用訂單優惠與優惠碼。第 n 件每滿一組折扣一次；套組逐件檢查條件；滿額贈按金額倍數免費贈送。</p>${allPromotions(db).map(r=>uiTemplate`<article class="transaction"><div class="row"><strong>${esc(r.name)} <small class="sub">${ui(promotionLabels[r.type])}</small></strong><div class="actions"><button data-action="editPromotion" data-id="${esc(r.id)}">設定</button><button class="danger" data-action="deletePromotion" data-id="${esc(r.id)}">刪除</button></div></div><div class="details">${promotionDescription(r)}</div></article>`).join('')||ui('<div class="empty">新增第一個優惠活動，讓組合優惠更好管理。</div>')}</section>`}
 function promotionForm(id){
  if(!db.products.length)return toast(ui('請先新增商品'));
- const old=allPromotions(db).find(r=>r.id===id),r={productId:db.products[0].id,name:'',type:'bundle',offer:0,minQty:1,discountLimit:null,requires:[],category:db.categories[0]||'',threshold:500,amount:50,scope:'products',productIds:[],nth:2,rate:6,...old};
+ const old=allPromotions(db).find(r=>r.id===id),r={productId:sortProductItems(db.products)[0].id,name:'',type:'bundle',offer:0,minQty:1,discountLimit:null,requires:[],category:db.categories[0]||'',threshold:500,amount:50,scope:'products',productIds:[],nth:2,rate:6,...old};
  openModal(uiTemplate`<div class="row"><h2>${id?ui('設定優惠活動'):ui('新增優惠活動')}</h2><button id="promoClose" class="icon">×</button></div><form id="promotionForm"><div class="formgrid">
  <label class="field">活動名稱<input name="name" required maxlength="80" value="${esc(r.name)}"></label>
  <label class="field">活動類型<select name="type">${Object.entries(promotionLabels).map(([v,label])=>`<option value="${v}" ${r.type===v?'selected':''}>${ui(label)}</option>`).join('')}</select></label>
- <label class="field rule-legacy">折抵商品<select name="productId">${db.products.map(p=>`<option value="${p.id}" ${p.id===r.productId?'selected':''}>${esc(p.sku)} · ${esc(p.name)}</option>`).join('')}</select></label>
+ <label class="field rule-legacy">折抵商品<select name="productId">${sortProductItems(db.products).map(p=>`<option value="${p.id}" ${p.id===r.productId?'selected':''}>${esc(p.sku)} · ${esc(p.name)}</option>`).join('')}</select></label>
  <label class="field rule-bundle">每組折扣所需本商品件數<input name="minQty" type="number" min="1" step="1" required value="${r.minQty}"></label>
  <label class="field rule-price">每件優惠價格（NT$）<input name="offer" type="number" min="0" step="1" required value="${r.offer}"><small class="sub">第 n 件活動按組數折扣較低價商品，不提高原價。</small></label>
  <label class="field rule-legacy"><span id="limitLabel">每筆最多折扣件數（留白＝全部）</span><input name="discountLimit" type="number" min="1" step="1" value="${r.discountLimit??''}"></label>
